@@ -131,7 +131,7 @@ export default (api: GlancewayAPI): SourceMethods => {
   return {
     async refresh() {
       // Get last seen item
-      const lastId = api.storage.get("lastId") as string | undefined;
+      const lastId = api.storage.get("lastId");
 
       const response = await api.fetch("https://api.example.com/items");
 

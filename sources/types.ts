@@ -78,6 +78,9 @@ export interface FetchResponse<T> {
 
   /** Parsed JSON (if response is valid JSON) */
   json?: T;
+
+  /** Error message if request failed */
+  error?: string;
 }
 
 /**
@@ -87,10 +90,10 @@ export interface FetchResponse<T> {
  */
 export interface StorageAPI {
   /** Get a stored value */
-  get(key: string): unknown;
+  get(key: string): string | undefined;
 
   /** Store a value */
-  set(key: string, value: unknown): void;
+  set(key: string, value: string): void;
 }
 
 /**

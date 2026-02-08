@@ -10,8 +10,12 @@ The API object is passed to your source's main function:
 module.exports = (api) => {
   // api is available here
   return {
-    refresh() { /* ... */ },
-    stop() { /* ... */ }
+    refresh() {
+      /* ... */
+    },
+    stop() {
+      /* ... */
+    },
   };
 };
 ```
@@ -28,10 +32,10 @@ emit(items: InfoItem[]): void
 
 ```typescript
 interface InfoItem {
-  id: string | number;              // Required: unique identifier
-  title: string;                    // Required: main display text
-  subtitle?: string;                // Optional: secondary text
-  url?: string;                     // Optional: clickable link
+  id: string | number; // Required: unique identifier
+  title: string; // Required: main display text
+  subtitle?: string; // Optional: secondary text
+  url?: string; // Optional: clickable link
   timestamp?: Date | string | number; // Optional: item time
 }
 ```
@@ -41,12 +45,12 @@ interface InfoItem {
 ```javascript
 api.emit([
   {
-    id: '123',
-    title: 'New notification',
-    subtitle: 'From repository',
-    url: 'https://github.com/...',
-    timestamp: '2024-01-15T10:30:00Z'
-  }
+    id: "123",
+    title: "New notification",
+    subtitle: "From repository",
+    url: "https://github.com/...",
+    timestamp: "2024-01-15T10:30:00Z",
+  },
 ]);
 ```
 
@@ -56,16 +60,16 @@ All of these are valid:
 
 ```javascript
 // ISO 8601 string
-timestamp: '2024-01-15T10:30:00Z'
+timestamp: "2024-01-15T10:30:00Z";
 
 // Unix timestamp (seconds)
-timestamp: 1705315800
+timestamp: 1705315800;
 
 // Unix timestamp (milliseconds)
-timestamp: 1705315800000
+timestamp: 1705315800000;
 
 // JavaScript Date object
-timestamp: new Date()
+timestamp: new Date();
 ```
 
 ---
@@ -82,10 +86,10 @@ fetch(url: string, options?: FetchOptions): Promise<FetchResponse>
 
 ```typescript
 interface FetchOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';  // Default: 'GET'
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"; // Default: 'GET'
   headers?: Record<string, string>;
   body?: string;
-  timeout?: number;  // Milliseconds, default: 30000
+  timeout?: number; // Milliseconds, default: 30000
 }
 ```
 
@@ -93,11 +97,11 @@ interface FetchOptions {
 
 ```typescript
 interface FetchResponse {
-  ok: boolean;                      // true if status 200-299
-  status: number;                   // HTTP status code
-  headers: Record<string, string>;  // Response headers
-  text: string;                     // Raw response body
-  json?: unknown;                   // Parsed JSON (if valid)
+  ok: boolean; // true if status 200-299
+  status: number; // HTTP status code
+  headers: Record<string, string>; // Response headers
+  text: string; // Raw response body
+  json?: unknown; // Parsed JSON (if valid)
 }
 ```
 
@@ -106,7 +110,7 @@ interface FetchResponse {
 #### GET Request
 
 ```javascript
-const response = await api.fetch('https://api.example.com/data');
+const response = await api.fetch("https://api.example.com/data");
 
 if (response.ok && response.json) {
   const data = response.json;
@@ -117,23 +121,23 @@ if (response.ok && response.json) {
 #### POST Request
 
 ```javascript
-const response = await api.fetch('https://api.example.com/data', {
-  method: 'POST',
+const response = await api.fetch("https://api.example.com/data", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer token123'
+    "Content-Type": "application/json",
+    Authorization: "Bearer token123",
   },
   body: JSON.stringify({
-    query: 'search term'
-  })
+    query: "search term",
+  }),
 });
 ```
 
 #### With Timeout
 
 ```javascript
-const response = await api.fetch('https://slow-api.example.com/data', {
-  timeout: 60000  // 60 seconds
+const response = await api.fetch("https://slow-api.example.com/data", {
+  timeout: 60000, // 60 seconds
 });
 ```
 
@@ -150,10 +154,10 @@ log(level: 'info' | 'error' | 'warn' | 'debug', message: string): void
 ### Examples
 
 ```javascript
-api.log('info', 'Starting refresh');
-api.log('debug', `Fetched ${items.length} items`);
-api.log('warn', 'Rate limit approaching');
-api.log('error', 'Failed to connect');
+api.log("info", "Starting refresh");
+api.log("debug", `Fetched ${items.length} items`);
+api.log("warn", "Rate limit approaching");
+api.log("error", "Failed to connect");
 ```
 
 ---
@@ -164,26 +168,8 @@ Persistent key-value storage that survives between refreshes.
 
 ```typescript
 interface StorageAPI {
-  get(key: string): unknown;
-  set(key: string, value: unknown): void;
-}
-```
-
-### Examples
-
-```javascript
-// Store a value
-api.storage.set('lastId', '12345');
-api.storage.set('cache', { items: [...], updated: Date.now() });
-
-// Retrieve a value
-const lastId = api.storage.get('lastId');
-const cache = api.storage.get('cache');
-
-// Check if exists
-const value = api.storage.get('key');
-if (value !== undefined) {
-  // Use value
+  get(key: string): string | undefined;
+  set(key: string, value: string): void;
 }
 ```
 
@@ -226,12 +212,12 @@ config:
 
 ```javascript
 // Get single value
-const token = api.config.get('api_token');
-const filter = api.config.get('filter');
+const token = api.config.get("api_token");
+const filter = api.config.get("filter");
 
 // Check required config
 if (!token) {
-  api.log('error', 'API token is required');
+  api.log("error", "API token is required");
   return;
 }
 
@@ -248,7 +234,10 @@ Create WebSocket connections for real-time data.
 
 ```typescript
 interface WebSocketAPI {
-  connect(url: string, callbacks: WebSocketCallbacks): Promise<WebSocketConnection>;
+  connect(
+    url: string,
+    callbacks: WebSocketCallbacks,
+  ): Promise<WebSocketConnection>;
 }
 
 interface WebSocketCallbacks {
@@ -274,28 +263,30 @@ module.exports = (api) => {
     async refresh() {
       if (connection) return;
 
-      connection = await api.websocket.connect('wss://stream.example.com', {
+      connection = await api.websocket.connect("wss://stream.example.com", {
         onConnect(ws) {
-          api.log('info', 'Connected');
-          ws.send(JSON.stringify({ type: 'subscribe' }));
+          api.log("info", "Connected");
+          ws.send(JSON.stringify({ type: "subscribe" }));
         },
 
         onMessage(data) {
           const event = JSON.parse(data);
-          api.emit([{
-            id: event.id,
-            title: event.message
-          }]);
+          api.emit([
+            {
+              id: event.id,
+              title: event.message,
+            },
+          ]);
         },
 
         onError(error) {
-          api.log('error', `Error: ${error}`);
+          api.log("error", `Error: ${error}`);
         },
 
         onClose(code) {
-          api.log('info', `Closed: ${code}`);
+          api.log("info", `Closed: ${code}`);
           connection = null;
-        }
+        },
       });
     },
 
@@ -304,7 +295,7 @@ module.exports = (api) => {
         connection.close();
         connection = null;
       }
-    }
+    },
   };
 };
 ```
@@ -333,7 +324,7 @@ module.exports = (api) => {
   return {
     async refresh() {
       // Fetch and emit data
-    }
+    },
   };
 };
 ```
@@ -357,7 +348,7 @@ module.exports = (api) => {
       if (interval) {
         clearInterval(interval);
       }
-    }
+    },
   };
 };
 ```
@@ -373,7 +364,7 @@ For TypeScript development, here are the complete type definitions:
 interface GlancewayAPI {
   emit(items: InfoItem[]): void;
   fetch(url: string, options?: FetchOptions): Promise<FetchResponse>;
-  log(level: 'info' | 'error' | 'warn' | 'debug', message: string): void;
+  log(level: "info" | "error" | "warn" | "debug", message: string): void;
   storage: StorageAPI;
   config: ConfigAPI;
   websocket: WebSocketAPI;
@@ -390,7 +381,7 @@ interface InfoItem {
 
 // === HTTP Fetch ===
 interface FetchOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   headers?: Record<string, string>;
   body?: string;
   timeout?: number;
@@ -406,8 +397,8 @@ interface FetchResponse {
 
 // === Storage ===
 interface StorageAPI {
-  get(key: string): unknown;
-  set(key: string, value: unknown): void;
+  get(key: string): string | undefined;
+  set(key: string, value: string): void;
 }
 
 // === Config ===
@@ -418,7 +409,10 @@ interface ConfigAPI {
 
 // === WebSocket ===
 interface WebSocketAPI {
-  connect(url: string, callbacks: WebSocketCallbacks): Promise<WebSocketConnection>;
+  connect(
+    url: string,
+    callbacks: WebSocketCallbacks,
+  ): Promise<WebSocketConnection>;
 }
 
 interface WebSocketCallbacks {

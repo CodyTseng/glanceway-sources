@@ -246,11 +246,11 @@ Get a user-configured value by key (defined in `manifest.yaml` config section).
 
 Get all user-configured values as a key-value map.
 
-### api.storage.get(key: string): unknown
+### api.storage.get(key: string): string | undefined
 
 Get a persisted value. Data survives between refreshes and app restarts.
 
-### api.storage.set(key: string, value: unknown): void
+### api.storage.set(key: string, value: string): void
 
 Store a value persistently.
 
