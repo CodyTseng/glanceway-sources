@@ -1,0 +1,299 @@
+import * as fs from "fs";
+import * as path from "path";
+import { parse as parseYaml } from "yaml";
+import * as esbuild from "esbuild";
+import archiver from "archiver";
+
+const SOURCES_DIR = path.join(process.cwd(), "sources");
+const DIST_DIR = path.join(process.cwd(), "dist");
+
+interface SourceInfo {
+  author: string;
+  sourceName: string;
+  sourcePath: string;
+  manifestPath: string;
+  indexPath: string;
+  version: string;
+  type: "js" | "yaml";
+}
+
+function parseArgs(): { source?: string } {
+  const args = process.argv.slice(2);
+  const sourceIndex = args.indexOf("--source");
+  if (sourceIndex !== -1 && args[sourceIndex + 1]) {
+    return { source: args[sourceIndex + 1] };
+  }
+  return {};
+}
+
+function scanSources(filterSource?: string): SourceInfo[] {
+  const sources: SourceInfo[] = [];
+
+  if (!fs.existsSync(SOURCES_DIR)) {
+    console.log("No sources directory found");
+    return sources;
+  }
+
+  const namespaces = fs.readdirSync(SOURCES_DIR);
+
+  for (const namespace of namespaces) {
+    const namespacePath = path.join(SOURCES_DIR, namespace);
+    const stat = fs.statSync(namespacePath);
+
+    if (!stat.isDirectory()) continue;
+
+    const entries = fs.readdirSync(namespacePath);
+
+    for (const entry of entries) {
+      const entryPath = path.join(namespacePath, entry);
+      const entryStat = fs.statSync(entryPath);
+
+      if (entryStat.isDirectory()) {
+        // JS source - look for manifest.yaml and index.ts
+        const manifestPath = path.join(entryPath, "manifest.yaml");
+        const indexTsPath = path.join(entryPath, "index.ts");
+
+        if (fs.existsSync(manifestPath) && fs.existsSync(indexTsPath)) {
+          const sourceId = `${namespace}/${entry}`;
+
+          // Skip if filtering and doesn't match
+          if (filterSource && sourceId !== filterSource) continue;
+
+          try {
+            const content = fs.readFileSync(manifestPath, "utf-8");
+            const manifest = parseYaml(content);
+
+            sources.push({
+              author: namespace,
+              sourceName: entry,
+              sourcePath: entryPath,
+              manifestPath,
+              indexPath: indexTsPath,
+              version: manifest.version || "1.0.0",
+              type: "js",
+            });
+          } catch (error) {
+            console.error(`Error parsing ${manifestPath}:`, error);
+          }
+        }
+      } else if (entry.endsWith(".yaml") || entry.endsWith(".yml")) {
+        // YAML source - standalone file
+        const sourceName = entry.replace(/\.ya?ml$/, "");
+        const sourceId = `${namespace}/${sourceName}`;
+
+        // Skip if filtering and doesn't match
+        if (filterSource && sourceId !== filterSource) continue;
+
+        try {
+          const content = fs.readFileSync(entryPath, "utf-8");
+          const manifest = parseYaml(content);
+
+          sources.push({
+            author: namespace,
+            sourceName,
+            sourcePath: entryPath,
+            manifestPath: entryPath,
+            indexPath: entryPath,
+            version: manifest.version || "1.0.0",
+            type: "yaml",
+          });
+        } catch (error) {
+          console.error(`Error parsing ${entryPath}:`, error);
+        }
+      }
+    }
+  }
+
+  return sources;
+}
+
+function getExistingVersions(author: string, sourceName: string): Set<string> {
+  const distPath = path.join(DIST_DIR, author, sourceName);
+  const versions = new Set<string>();
+
+  if (!fs.existsSync(distPath)) {
+    return versions;
+  }
+
+  const files = fs.readdirSync(distPath);
+  for (const file of files) {
+    // Match version patterns like "1.0.0.zip" or "1.0.0.yaml"
+    const match = file.match(/^(\d+\.\d+\.\d+)\.(zip|yaml)$/);
+    if (match) {
+      versions.add(match[1]);
+    }
+  }
+
+  return versions;
+}
+
+async function compileTypeScript(indexPath: string): Promise<string> {
+  const result = await esbuild.build({
+    entryPoints: [indexPath],
+    bundle: true,
+    platform: "node",
+    format: "esm",
+    write: false,
+    external: ["node:*"],
+  });
+
+  // Convert ESM default export to CJS module.exports for clean output.
+  // esbuild ESM with `export default` produces one of:
+  //   export { name as default };     (when hoisted to a var)
+  //   export default <expression>;    (inline)
+  const code = result.outputFiles[0].text;
+  const replaced = code
+    .replace(/^export\s*\{\s*(\w+)\s+as\s+default\s*\}\s*;?\s*$/m, "module.exports = $1;")
+    .replace(/^export\s+default\s+/m, "module.exports = ");
+
+  if (replaced === code) {
+    throw new Error(`No default export found in compiled output of ${indexPath}`);
+  }
+  return replaced;
+}
+
+async function createZip(
+  outputPath: string,
+  files: { name: string; content: string | Buffer }[],
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const output = fs.createWriteStream(outputPath);
+    const archive = archiver("zip", { zlib: { level: 9 } });
+
+    output.on("close", resolve);
+    archive.on("error", reject);
+
+    archive.pipe(output);
+
+    for (const file of files) {
+      archive.append(file.content, { name: file.name });
+    }
+
+    archive.finalize();
+  });
+}
+
+async function buildJsSource(source: SourceInfo): Promise<boolean> {
+  const existingVersions = getExistingVersions(
+    source.author,
+    source.sourceName,
+  );
+
+  if (existingVersions.has(source.version)) {
+    console.log(
+      `  ⏭️  ${source.author}/${source.sourceName}@${source.version} already exists, skipping`,
+    );
+    return false;
+  }
+
+  console.log(
+    `  📦 Building ${source.author}/${source.sourceName}@${source.version}`,
+  );
+
+  // Compile TypeScript
+  const compiledJs = await compileTypeScript(source.indexPath);
+
+  // Read manifest
+  const manifestContent = fs.readFileSync(source.manifestPath, "utf-8");
+
+  // Create dist directory
+  const distPath = path.join(DIST_DIR, source.author, source.sourceName);
+  fs.mkdirSync(distPath, { recursive: true });
+
+  // Create versioned zip
+  const versionedZipPath = path.join(distPath, `${source.version}.zip`);
+  await createZip(versionedZipPath, [
+    { name: "manifest.yaml", content: manifestContent },
+    { name: "index.js", content: compiledJs },
+  ]);
+
+  // Create/update latest.zip
+  const latestZipPath = path.join(distPath, "latest.zip");
+  await createZip(latestZipPath, [
+    { name: "manifest.yaml", content: manifestContent },
+    { name: "index.js", content: compiledJs },
+  ]);
+
+  console.log(`  ✅ Created ${source.version}.zip and latest.zip`);
+  return true;
+}
+
+async function buildYamlSource(source: SourceInfo): Promise<boolean> {
+  const existingVersions = getExistingVersions(
+    source.author,
+    source.sourceName,
+  );
+
+  if (existingVersions.has(source.version)) {
+    console.log(
+      `  ⏭️  ${source.author}/${source.sourceName}@${source.version} already exists, skipping`,
+    );
+    return false;
+  }
+
+  console.log(
+    `  📦 Building ${source.author}/${source.sourceName}@${source.version}`,
+  );
+
+  // Read YAML content
+  const yamlContent = fs.readFileSync(source.sourcePath, "utf-8");
+
+  // Create dist directory
+  const distPath = path.join(DIST_DIR, source.author, source.sourceName);
+  fs.mkdirSync(distPath, { recursive: true });
+
+  // Create versioned yaml
+  const versionedYamlPath = path.join(distPath, `${source.version}.yaml`);
+  fs.writeFileSync(versionedYamlPath, yamlContent);
+
+  // Create/update latest.yaml
+  const latestYamlPath = path.join(distPath, "latest.yaml");
+  fs.writeFileSync(latestYamlPath, yamlContent);
+
+  console.log(`  ✅ Created ${source.version}.yaml and latest.yaml`);
+  return true;
+}
+
+async function main() {
+  const args = parseArgs();
+
+  console.log("🔍 Scanning sources...\n");
+  const sources = scanSources(args.source);
+
+  if (sources.length === 0) {
+    console.log("No sources found to build");
+    return;
+  }
+
+  console.log(`Found ${sources.length} source(s)\n`);
+
+  let built = 0;
+  let skipped = 0;
+
+  for (const source of sources) {
+    try {
+      let wasBuilt: boolean;
+
+      if (source.type === "js") {
+        wasBuilt = await buildJsSource(source);
+      } else {
+        wasBuilt = await buildYamlSource(source);
+      }
+
+      if (wasBuilt) {
+        built++;
+      } else {
+        skipped++;
+      }
+    } catch (error) {
+      console.error(
+        `  ❌ Error building ${source.author}/${source.sourceName}:`,
+        error,
+      );
+    }
+  }
+
+  console.log(`\n✨ Done! Built: ${built}, Skipped: ${skipped}`);
+}
+
+main().catch(console.error);
