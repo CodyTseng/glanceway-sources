@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-02-08T04:04:15.870Z",
+  "updated_at": "2026-02-08T05:46:52.594Z",
   "sources": [
     {
       "id": "codytseng/coingecko-crypto",
@@ -240,6 +240,27 @@
         {
           "version": "1.0.0",
           "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/reddit/1.0.0.zip"
+        }
+      ]
+    },
+    {
+      "id": "codytseng/service-health-check",
+      "name": "Service Health Check",
+      "description": "Monitor service endpoints and get notified when they go down",
+      "author": "codytseng",
+      "author_url": "https://github.com/codytseng",
+      "category": "Developer",
+      "tags": [
+        "monitoring",
+        "health-check"
+      ],
+      "type": "js",
+      "latest_version": "1.0.0",
+      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/service-health-check",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/service-health-check/1.0.0.zip"
         }
       ]
     },
