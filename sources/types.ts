@@ -21,6 +21,9 @@ export interface GlancewayAPI {
 
   /** Create WebSocket connections */
   websocket: WebSocketAPI;
+
+  /** Current Glanceway app version */
+  appVersion: string;
 }
 
 /**

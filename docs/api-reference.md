@@ -228,6 +228,16 @@ const allConfig = api.config.getAll();
 
 ---
 
+## api.appVersion
+
+Current Glanceway app version string (e.g., `"1.2.0"`).
+
+```javascript
+api.log("info", `Running on Glanceway ${api.appVersion}`);
+```
+
+---
+
 ## api.websocket
 
 Create WebSocket connections for real-time data.
@@ -368,6 +378,7 @@ interface GlancewayAPI {
   storage: StorageAPI;
   config: ConfigAPI;
   websocket: WebSocketAPI;
+  appVersion: string;
 }
 
 // === Information Item ===

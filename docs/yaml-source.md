@@ -51,6 +51,7 @@ parse:
 | `category` | Yes | Category for grouping |
 | `tags` | No | Array of tags for filtering |
 | `interval` | No | Refresh interval in seconds (default: 300) |
+| `min_app_version` | No | Minimum Glanceway app version required (e.g., `1.2.0`) |
 
 ## Categories
 

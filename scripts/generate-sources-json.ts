@@ -28,6 +28,8 @@ interface SourceEntry {
   latest_version: string;
   source_url: string;
   versions: SourceVersion[];
+  spec?: number;
+  min_app_version?: string;
 }
 
 interface SourcesJson {
@@ -110,7 +112,7 @@ function scanSources(): SourceEntry[] {
               changelog: version === manifest.version ? manifest.changelog : undefined,
             }));
 
-            sources.push({
+            const jsEntry: SourceEntry = {
               id: sourceId,
               name: manifest.name || entry,
               description: manifest.description || "",
@@ -122,7 +124,10 @@ function scanSources(): SourceEntry[] {
               latest_version: versions[0],
               source_url: `https://github.com/${GITHUB_REPO}/tree/${GITHUB_BRANCH}/sources/${namespace}/${entry}`,
               versions: sourceVersions,
-            });
+            };
+            if (manifest.spec != null) jsEntry.spec = manifest.spec;
+            if (manifest.min_app_version != null) jsEntry.min_app_version = manifest.min_app_version;
+            sources.push(jsEntry);
           } catch (error) {
             console.error(`Error parsing ${manifestPath}:`, error);
           }
@@ -147,7 +152,7 @@ function scanSources(): SourceEntry[] {
             changelog: version === manifest.version ? manifest.changelog : undefined,
           }));
 
-          sources.push({
+          const yamlEntry: SourceEntry = {
             id: sourceId,
             name: manifest.name || sourceName,
             description: manifest.description || "",
@@ -159,7 +164,10 @@ function scanSources(): SourceEntry[] {
             latest_version: versions[0],
             source_url: `https://github.com/${GITHUB_REPO}/tree/${GITHUB_BRANCH}/sources/${namespace}/${entry}`,
             versions: sourceVersions,
-          });
+          };
+          if (manifest.spec != null) yamlEntry.spec = manifest.spec;
+          if (manifest.min_app_version != null) yamlEntry.min_app_version = manifest.min_app_version;
+          sources.push(yamlEntry);
         } catch (error) {
           console.error(`Error parsing ${entryPath}:`, error);
         }

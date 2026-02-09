@@ -258,6 +258,10 @@ Store a value persistently.
 
 Log messages for debugging. Levels: `"info"`, `"error"`, `"warn"`, `"debug"`.
 
+### api.appVersion
+
+Current Glanceway app version string (e.g., `"1.2.0"`).
+
 ### api.websocket.connect(url, callbacks): Promise\<WebSocketConnection\>
 
 Create a WebSocket connection for real-time data.
@@ -287,6 +291,7 @@ author_url: https://... # Optional
 category: Developer # Required: Developer | News | Social | Finance | Entertainment | Productivity | Other
 tags: # Optional
   - tag1
+min_app_version: 1.2.0 # Optional: minimum Glanceway app version required
 config: # Optional: user-configurable values
   - key: API_TOKEN
     name: API Token
