@@ -3,7 +3,7 @@ import type { GlancewayAPI, SourceMethods } from "../../types";
 export default (api: GlancewayAPI): SourceMethods => {
   return {
     async refresh() {
-      const keyword = api.config.get("KEYWORD") || "typescript";
+      const keyword = (api.config.get("KEYWORD") as string) || "typescript";
 
       type NpmSearchResult = {
         objects: Array<{

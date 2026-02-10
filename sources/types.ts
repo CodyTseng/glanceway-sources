@@ -106,10 +106,10 @@ export interface StorageAPI {
  */
 export interface ConfigAPI {
   /** Get a config value by key */
-  get(key: string): string | undefined;
+  get(key: string): unknown;
 
   /** Get all config values */
-  getAll(): Record<string, string>;
+  getAll(): Record<string, unknown>;
 }
 
 /**

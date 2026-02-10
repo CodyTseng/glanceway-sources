@@ -12,9 +12,9 @@ tags:
 config:
   - key: TAG
     name: Tag
-    type: string
+    type: list
     required: false
-    description: Filter by tag, comma-separated for multiple (e.g., javascript,python,react). Leave empty for all tags.
+    description: Filter by tag (e.g. javascript, python, react). Leave empty for all tags.
   - key: SORT
     name: Sort
     type: select

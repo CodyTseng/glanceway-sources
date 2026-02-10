@@ -18,7 +18,7 @@ interface OnThisDayResponse {
 }
 
 export default (api: GlancewayAPI): SourceMethods => {
-  const language = api.config.get("LANGUAGE") || "en";
+  const language = (api.config.get("LANGUAGE") as string) || "en";
 
   return {
     async refresh() {

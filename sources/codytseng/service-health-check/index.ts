@@ -3,13 +3,8 @@ import type { GlancewayAPI, SourceMethods } from "../../types";
 export default (api: GlancewayAPI): SourceMethods => {
   return {
     async refresh() {
-      const urlsConfig = api.config.get("URLS");
-      if (!urlsConfig) return;
-
-      const urls = urlsConfig
-        .split(",")
-        .map((u) => u.trim())
-        .filter(Boolean);
+      const urls = api.config.get("URLS") as string[] | undefined;
+      if (!urls || urls.length === 0) return;
 
       const previousDownUrls = new Set<string>(
         JSON.parse(api.storage.get("downUrls") ?? `[]`),

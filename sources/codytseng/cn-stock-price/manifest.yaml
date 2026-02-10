@@ -15,6 +15,6 @@ tags:
 config:
   - key: STOCK_CODES
     name: 股票代码
-    type: string
+    type: list
     required: true
-    description: "用逗号分隔的股票代码（例如 600519,000001,300750）"
+    description: "股票代码（例如 600519, 000001, 300750）"

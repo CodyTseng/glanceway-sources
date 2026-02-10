@@ -20,6 +20,6 @@ config:
     description: "Free API token from https://finnhub.io"
   - key: SYMBOLS
     name: Stock Symbols
-    type: string
+    type: list
     required: true
-    description: "Comma-separated stock symbols (e.g. AAPL,TSLA,MSFT)"
+    description: "Stock symbols (e.g. AAPL, TSLA, MSFT)"

@@ -14,7 +14,7 @@ export default (api: GlancewayAPI): SourceMethods => {
         created: number;
       };
 
-      const nodeName = api.config.get("NODE_NAME");
+      const nodes = (api.config.get("NODE_NAME") as string[] | undefined) ?? [];
 
       const toItems = (topics: Topic[]) =>
         topics.map((topic) => ({
@@ -25,8 +25,7 @@ export default (api: GlancewayAPI): SourceMethods => {
           timestamp: topic.created,
         }));
 
-      if (nodeName) {
-        const nodes = nodeName.split(",").map((n) => n.trim()).filter(Boolean);
+      if (nodes.length > 0) {
         await Promise.all(
           nodes.map(async (node) => {
             const res = await api.fetch<Topic[]>(

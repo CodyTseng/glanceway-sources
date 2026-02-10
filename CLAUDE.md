@@ -72,7 +72,7 @@ tags:
 # config:
 #   - key: API_TOKEN
 #     name: API Token
-#     type: secret             # string, number, boolean, secret, or select
+#     type: secret             # string, number, boolean, secret, select, or list
 #     required: true
 #     description: Your API token
 
@@ -137,7 +137,7 @@ Add `config` entries for any values the user needs to provide (API tokens, usern
 config:
   - key: API_TOKEN
     name: API Token
-    type: secret # string, number, boolean, secret, or select
+    type: secret # string, number, boolean, secret, select, or list
     required: true
     description: Your API token
   - key: USERNAME
@@ -238,11 +238,11 @@ if (response.ok && response.json) {
 }
 ```
 
-### api.config.get(key: string): string | undefined
+### api.config.get(key: string): unknown
 
-Get a user-configured value by key (defined in `manifest.yaml` config section).
+Get a user-configured value by key (defined in `manifest.yaml` config section). Returns `string` for most types, `string[]` for `list` type.
 
-### api.config.getAll(): Record\<string, string\>
+### api.config.getAll(): Record\<string, unknown\>
 
 Get all user-configured values as a key-value map.
 
@@ -295,9 +295,14 @@ min_app_version: 1.2.0 # Optional: minimum Glanceway app version required
 config: # Optional: user-configurable values
   - key: API_TOKEN
     name: API Token
-    type: secret # string, number, boolean, secret, or select
+    type: secret # string, number, boolean, secret, select, or list
     required: true
     description: Description shown to user
+  - key: TAGS
+    name: Tags
+    type: list # list for string arrays (multiple values)
+    required: false
+    description: Tags to filter by
   - key: SORT
     name: Sort Order
     type: select # select requires options list

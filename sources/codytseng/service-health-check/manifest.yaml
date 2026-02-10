@@ -11,6 +11,6 @@ tags:
 config:
   - key: URLS
     name: Service URLs
-    type: string
+    type: list
     required: true
-    description: Comma-separated list of URLs to monitor (e.g. https://example.com,https://api.example.com/health)
+    description: URLs to monitor (e.g. https://example.com)

@@ -86,7 +86,7 @@ tags:${tagsStr}
 # config:
 #   - key: API_TOKEN
 #     name: API Token
-#     type: secret           # string, number, boolean, secret, or select
+#     type: secret           # string, number, boolean, secret, select, or list
 #     required: true
 #     description: Your API token
 #   - key: SORT

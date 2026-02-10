@@ -11,9 +11,9 @@ tags:
 config:
   - key: SUBREDDIT
     name: Subreddit
-    type: string
+    type: list
     required: true
-    description: Subreddit name without r/, multiple with + (e.g., programming+javascript)
+    description: Subreddit name without r/ (e.g. programming, javascript)
   - key: SORT
     name: Sort
     type: select

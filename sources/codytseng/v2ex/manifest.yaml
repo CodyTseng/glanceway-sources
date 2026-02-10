@@ -12,6 +12,6 @@ tags:
 config:
   - key: NODE_NAME
     name: 节点名称
-    type: string
+    type: list
     required: false
-    description: 按节点筛选，多个用逗号分隔（如 python,apple,create）。留空则显示热门话题。
+    description: 按节点筛选（如 python, apple, create）。留空则显示热门话题。

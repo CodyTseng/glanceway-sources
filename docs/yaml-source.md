@@ -72,7 +72,7 @@ Define user-configurable values:
 config:
   - key: api_token
     name: API Token
-    type: secret         # string, number, boolean, secret, or select
+    type: secret         # string, number, boolean, secret, select, or list
     description: Your personal API token
     required: true
 

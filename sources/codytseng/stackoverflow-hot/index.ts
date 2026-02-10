@@ -14,11 +14,8 @@ export default (api: GlancewayAPI): SourceMethods => {
         creation_date: number;
       };
 
-      const tagConfig = api.config.get("TAG");
-      const sort = api.config.get("SORT") || "hot";
-      const tags = tagConfig
-        ? tagConfig.split(",").map((t) => t.trim()).filter(Boolean)
-        : [];
+      const tags = (api.config.get("TAG") as string[] | undefined) ?? [];
+      const sort = (api.config.get("SORT") as string) || "hot";
 
       const toItems = (questions: Question[]) =>
         questions.map((q) => ({

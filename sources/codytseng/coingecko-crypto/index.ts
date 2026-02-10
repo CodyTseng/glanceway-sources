@@ -10,8 +10,8 @@ interface CoinMarket {
 }
 
 export default (api: GlancewayAPI): SourceMethods => {
-  const currency = api.config.get("CURRENCY") || "usd";
-  const order = api.config.get("ORDER") || "market_cap_desc";
+  const currency = (api.config.get("CURRENCY") as string) || "usd";
+  const order = (api.config.get("ORDER") as string) || "market_cap_desc";
 
   return {
     async refresh() {

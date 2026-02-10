@@ -17,15 +17,12 @@ interface FinnhubProfile {
 }
 
 export default (api: GlancewayAPI): SourceMethods => {
-  const token = api.config.get("FINNHUB_TOKEN");
-  const symbolsRaw = api.config.get("SYMBOLS") ?? "";
+  const token = api.config.get("FINNHUB_TOKEN") as string;
+  const symbolsRaw = (api.config.get("SYMBOLS") as string[] | undefined) ?? [];
 
   return {
     async refresh() {
-      const symbols = symbolsRaw
-        .split(",")
-        .map((s) => s.trim().toUpperCase())
-        .filter(Boolean);
+      const symbols = symbolsRaw.map((s) => s.toUpperCase());
 
       if (symbols.length === 0) {
         api.emit([]);

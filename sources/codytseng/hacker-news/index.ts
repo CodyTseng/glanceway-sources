@@ -3,7 +3,7 @@ import type { GlancewayAPI, SourceMethods } from "../../types";
 export default (api: GlancewayAPI): SourceMethods => {
   return {
     async refresh() {
-      const storyType = api.config.get("STORY_TYPE") || "top";
+      const storyType = (api.config.get("STORY_TYPE") as string) || "top";
       const endpoint = `https://hacker-news.firebaseio.com/v0/${storyType}stories.json`;
       const idsResponse = await api.fetch<number[]>(endpoint);
 

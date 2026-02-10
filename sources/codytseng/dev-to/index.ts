@@ -15,10 +15,7 @@ export default (api: GlancewayAPI): SourceMethods => {
         user: { name: string };
       };
 
-      const tagConfig = api.config.get("TAG");
-      const tags = tagConfig
-        ? tagConfig.split(",").map((t) => t.trim()).filter(Boolean)
-        : [];
+      const tags = (api.config.get("TAG") as string[] | undefined) ?? [];
 
       const toItems = (articles: Article[]) =>
         articles.map((article) => ({

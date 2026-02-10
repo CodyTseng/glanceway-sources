@@ -29,14 +29,10 @@ function marketLabel(market: number): string {
 }
 
 export default (api: GlancewayAPI): SourceMethods => {
-  const stockCodesRaw = api.config.get("STOCK_CODES") ?? "";
+  const codes = (api.config.get("STOCK_CODES") as string[] | undefined) ?? [];
 
   return {
     async refresh() {
-      const codes = stockCodesRaw
-        .split(",")
-        .map((c) => c.trim())
-        .filter(Boolean);
 
       if (codes.length === 0) {
         api.emit([]);
