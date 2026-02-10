@@ -1,7 +1,30 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-02-09T14:58:29.565Z",
+  "updated_at": "2026-02-10T03:02:53.987Z",
   "sources": [
+    {
+      "id": "codytseng/cn-stock-price",
+      "name": "A 股股价监控",
+      "description": "在菜单栏实时监控 A 股股价。\n显示当前价格、涨跌额和涨跌幅。\n",
+      "author": "codytseng",
+      "author_url": "https://github.com/codytseng",
+      "category": "Finance",
+      "tags": [
+        "stock",
+        "finance",
+        "china",
+        "a-share"
+      ],
+      "type": "js",
+      "latest_version": "1.0.0",
+      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/cn-stock-price",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/cn-stock-price/1.0.0.zip"
+        }
+      ]
+    },
     {
       "id": "codytseng/coingecko-crypto",
       "name": "CoinGecko Crypto Markets",
@@ -305,6 +328,28 @@
         {
           "version": "1.0.0",
           "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/stackoverflow-hot/1.0.0.zip"
+        }
+      ]
+    },
+    {
+      "id": "codytseng/stock-price",
+      "name": "Stock Price Monitor",
+      "description": "Monitor global stock prices in your menu bar.\nDisplays real-time price, change amount, and change percentage.\nPowered by Finnhub (free API key required).\n",
+      "author": "codytseng",
+      "author_url": "https://github.com/codytseng",
+      "category": "Finance",
+      "tags": [
+        "stock",
+        "finance",
+        "market"
+      ],
+      "type": "js",
+      "latest_version": "1.0.0",
+      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/stock-price",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/stock-price/1.0.0.zip"
         }
       ]
     },

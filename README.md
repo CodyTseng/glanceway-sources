@@ -23,8 +23,10 @@ Community information sources for [Glanceway](https://glanceway.app).
 
 ### Finance
 
+- **[A 股股价监控](sources/codytseng/cn-stock-price)** by [codytseng](https://github.com/codytseng) - 在菜单栏实时监控 A 股股价。 显示当前价格、涨跌额和涨跌幅。 [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/cn-stock-price/latest.zip)]
 - **[CoinGecko Crypto Markets](sources/codytseng/coingecko-crypto)** by [codytseng](https://github.com/codytseng) - Top cryptocurrencies by market cap from CoinGecko [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/coingecko-crypto/latest.zip)]
 - **[Finnhub Market News](sources/codytseng/finnhub-news.yaml)** by [codytseng](https://github.com/codytseng) - Financial news aggregated from major sources like Yahoo, Reuters, and CNBC via Finnhub [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/finnhub-news/latest.yaml)]
+- **[Stock Price Monitor](sources/codytseng/stock-price)** by [codytseng](https://github.com/codytseng) - Monitor global stock prices in your menu bar. Displays real-time price, change amount, and change percentage. Powered by Finnhub (free API key required). [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/stock-price/latest.zip)]
 - **[华尔街见闻](sources/codytseng/wallstreetcn.yaml)** by [codytseng](https://github.com/codytseng) - 华尔街见闻 7x24 快讯 [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/wallstreetcn/latest.yaml)]
 - **[财联社电报](sources/codytseng/cls-telegraph.yaml)** by [codytseng](https://github.com/codytseng) - 财联社电报快讯 [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/cls-telegraph/latest.yaml)]
 - **[金十数据](sources/codytseng/jin10)** by [codytseng](https://github.com/codytseng) - 金十数据快讯 [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/jin10/latest.zip)]
