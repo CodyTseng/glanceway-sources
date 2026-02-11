@@ -1,9 +1,14 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  URLS: string[] | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const urls = api.config.get("URLS");
+
   return {
     async refresh() {
-      const urls = api.config.get("URLS") as string[] | undefined;
       if (!urls || urls.length === 0) return;
 
       const previousDownUrls = new Set<string>(

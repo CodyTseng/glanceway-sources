@@ -1,6 +1,12 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  TAG: string[] | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const tags = api.config.get("TAG") ?? [];
+
   return {
     async refresh() {
       type Article = {
@@ -14,8 +20,6 @@ export default (api: GlancewayAPI): SourceMethods => {
         reading_time_minutes: number;
         user: { name: string };
       };
-
-      const tags = (api.config.get("TAG") as string[] | undefined) ?? [];
 
       const toItems = (articles: Article[]) =>
         articles.map((article) => ({

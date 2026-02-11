@@ -1,12 +1,17 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  SUBREDDIT: string[] | undefined;
+  SORT: string;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const subreddits = api.config.get("SUBREDDIT") ?? ["programming"];
+  const subreddit = subreddits.join("+");
+  const sort = api.config.get("SORT") || "hot";
+
   return {
     async refresh() {
-      const subreddits = (api.config.get("SUBREDDIT") as string[] | undefined) ?? ["programming"];
-      const subreddit = subreddits.join("+");
-      const sort = (api.config.get("SORT") as string) || "hot";
-
       const response = await api.fetch<{
         data: {
           children: Array<{

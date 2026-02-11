@@ -1,9 +1,15 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
-  const apiKey = api.config.get("TMDB_API_KEY") as string;
-  const mediaType = (api.config.get("MEDIA_TYPE") as string) || "all";
-  const timeWindow = (api.config.get("TIME_WINDOW") as string) || "week";
+type Config = {
+  TMDB_API_KEY: string;
+  MEDIA_TYPE: string;
+  TIME_WINDOW: string;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const apiKey = api.config.get("TMDB_API_KEY");
+  const mediaType = api.config.get("MEDIA_TYPE") || "all";
+  const timeWindow = api.config.get("TIME_WINDOW") || "week";
 
   return {
     async refresh() {

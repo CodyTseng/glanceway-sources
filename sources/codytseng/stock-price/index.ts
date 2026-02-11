@@ -16,9 +16,14 @@ interface FinnhubProfile {
   ticker: string;
 }
 
-export default (api: GlancewayAPI): SourceMethods => {
-  const token = api.config.get("FINNHUB_TOKEN") as string;
-  const symbolsRaw = (api.config.get("SYMBOLS") as string[] | undefined) ?? [];
+type Config = {
+  FINNHUB_TOKEN: string;
+  SYMBOLS: string[] | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const token = api.config.get("FINNHUB_TOKEN");
+  const symbolsRaw = api.config.get("SYMBOLS") ?? [];
 
   return {
     async refresh() {

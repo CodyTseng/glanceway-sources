@@ -1,6 +1,12 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  NODE_NAME: string[] | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const nodes = api.config.get("NODE_NAME") ?? [];
+
   return {
     async refresh() {
       type Topic = {
@@ -13,8 +19,6 @@ export default (api: GlancewayAPI): SourceMethods => {
         member: { username: string };
         created: number;
       };
-
-      const nodes = (api.config.get("NODE_NAME") as string[] | undefined) ?? [];
 
       const toItems = (topics: Topic[]) =>
         topics.map((topic) => ({

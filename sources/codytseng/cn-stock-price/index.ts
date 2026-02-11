@@ -28,8 +28,12 @@ function marketLabel(market: number): string {
   return market === 1 ? "SH" : "SZ";
 }
 
-export default (api: GlancewayAPI): SourceMethods => {
-  const codes = (api.config.get("STOCK_CODES") as string[] | undefined) ?? [];
+type Config = {
+  STOCK_CODES: string[] | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const codes = api.config.get("STOCK_CODES") ?? [];
 
   return {
     async refresh() {

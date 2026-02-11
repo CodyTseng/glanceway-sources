@@ -3,7 +3,7 @@
  *
  * The main API object passed to your source function.
  */
-export interface GlancewayAPI {
+export interface GlancewayAPI<TConfig extends Record<string, unknown> = Record<string, unknown>> {
   /** Send information items to Glanceway for display */
   emit(items: InfoItem[]): void;
 
@@ -17,7 +17,7 @@ export interface GlancewayAPI {
   storage: StorageAPI;
 
   /** Access user-configured values */
-  config: ConfigAPI;
+  config: ConfigAPI<TConfig>;
 
   /** Create WebSocket connections */
   websocket: WebSocketAPI;
@@ -104,12 +104,12 @@ export interface StorageAPI {
  *
  * Access user-configured values defined in manifest.yaml.
  */
-export interface ConfigAPI {
+export interface ConfigAPI<TConfig extends Record<string, unknown> = Record<string, unknown>> {
   /** Get a config value by key */
-  get(key: string): unknown;
+  get<K extends keyof TConfig>(key: K): TConfig[K];
 
   /** Get all config values */
-  getAll(): Record<string, unknown>;
+  getAll(): TConfig;
 }
 
 /**

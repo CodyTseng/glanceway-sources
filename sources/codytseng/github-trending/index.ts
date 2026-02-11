@@ -1,9 +1,14 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  LANGUAGE: string | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const language = api.config.get("LANGUAGE");
+
   return {
     async refresh() {
-      const language = api.config.get("LANGUAGE") as string | undefined;
 
       const since = new Date();
       since.setDate(since.getDate() - 7);

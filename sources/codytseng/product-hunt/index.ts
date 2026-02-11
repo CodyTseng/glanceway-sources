@@ -1,10 +1,14 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  API_TOKEN: string;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const token = api.config.get("API_TOKEN");
+
   return {
     async refresh() {
-      const token = api.config.get("API_TOKEN") as string;
-
       const query = `{
         posts(order: RANKING) {
           edges {

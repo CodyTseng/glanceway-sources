@@ -171,10 +171,10 @@ npm run build-sources -- --source myname/my-source
 import type { GlancewayAPI, SourceMethods } from "../../types";
 ```
 
-All functionality is provided through the `api` parameter. Use `export default` for the default export:
+All functionality is provided through the `api` parameter. Use `export default` for the default export. Use `GlancewayAPI<Config>` generic when config fields are defined:
 
 ```typescript
-export default (api: GlancewayAPI): SourceMethods => {
+export default (api: GlancewayAPI<Config>): SourceMethods => {
   return {
     async refresh() {
       /* ... */
@@ -317,6 +317,152 @@ config: # Optional: user-configurable values
 ## Source Design Guidelines
 
 - Always make full use of the `subtitle` field. If the API response contains summary, description, brief, or any descriptive text, map it to `subtitle` so users get maximum information at a glance.
+
+## TypeScript Source Code Conventions
+
+### File Structure Order
+
+```typescript
+// 1. Type import (always first)
+import type { GlancewayAPI, SourceMethods } from "../../types";
+
+// 2. Type definitions (config, response types, data models)
+type Config = {
+  API_TOKEN: string;
+  TAGS: string[];
+};
+
+type Article = {
+  id: number;
+  title: string;
+  description: string;
+  url: string;
+  published_at: string;
+};
+
+// 3. Helper functions (pure utilities, no api dependency)
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "");
+}
+
+// 4. Default export (with Config generic)
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  // 5. Config reading (in outer closure; script reloads on config change)
+  const token = api.config.get("API_TOKEN");
+
+  return {
+    // 6. Fetch, transform, emit
+    async refresh() {
+      // ...
+    },
+  };
+};
+```
+
+### Config Typing
+
+Use `GlancewayAPI<Config>` generic to define config field types. This gives `api.config.get()` type-safe keys and return values, eliminating manual `as` casts.
+
+```typescript
+type Config = {
+  SORT: string;
+  TAGS: string[];
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  return {
+    async refresh() {
+      const sort = api.config.get("SORT");   // string
+      const tags = api.config.get("TAGS");   // string[]
+      // api.config.get("TYPO")              // compile error
+    },
+  };
+};
+```
+
+### Config Reading
+
+Read config **in the outer closure** (before `return`), not inside `refresh()`. When config changes, Glanceway reloads the entire script, so the outer closure always has fresh values.
+
+```typescript
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const sort = api.config.get("SORT") || "hot";
+
+  return {
+    async refresh() {
+      // use sort directly
+    },
+  };
+};
+```
+
+### Response Type Annotations
+
+Use `api.fetch<T>()` generics to type responses. For simple/one-off types, inline them at the call site. For complex or reused types, define named types at the top of the file.
+
+```typescript
+// Simple: inline
+const res = await api.fetch<{ items: Article[] }>("https://...");
+
+// Complex: use named interface defined at file top
+const res = await api.fetch<RedditListing>("https://...");
+```
+
+### Error Handling
+
+Check `res.ok && res.json` before using response data. For the main/only request, throw on failure. For parallel sub-requests, skip failures silently.
+
+```typescript
+// Single request: throw on failure
+const res = await api.fetch<Article[]>(url);
+if (!res.ok || !res.json) {
+  throw new Error(`Failed to fetch articles (HTTP ${res.status})`);
+}
+api.emit(toItems(res.json));
+```
+
+### Parallel Requests
+
+Always use `Promise.allSettled` (never `Promise.all`) for parallel requests. Skip failed results instead of throwing.
+
+```typescript
+await Promise.allSettled(
+  ids.map(async (id) => {
+    const res = await api.fetch<Item>(`https://api.example.com/items/${id}`);
+    if (res.ok && res.json) {
+      items.push(res.json);
+      api.emit(/* ... */);
+    }
+  }),
+);
+```
+
+### Helper Functions
+
+Define reusable mapping functions (e.g., `toItems`) **inside `refresh()`** when they use closure variables. Define pure utility functions (e.g., `stripHtml`) **at the module top** before the export.
+
+```typescript
+// Module top: pure utility, no dependency on api or config
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "");
+}
+
+export default (api: GlancewayAPI): SourceMethods => {
+  return {
+    async refresh() {
+      // Inside refresh: uses closure variables (toItems references api context)
+      const toItems = (articles: Article[]) =>
+        articles.map((a) => ({
+          id: a.id.toString(),
+          title: a.title,
+          subtitle: stripHtml(a.description),
+          url: a.url,
+          timestamp: a.published_at,
+        }));
+    },
+  };
+};
+```
 
 ## Auto-Generated Files (Do Not Commit)
 

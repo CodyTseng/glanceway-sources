@@ -1,8 +1,13 @@
 import type { GlancewayAPI, InfoItem, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
-  const token = api.config.get("GITHUB_TOKEN") as string;
-  const repository = api.config.get("REPOSITORY") as string | undefined;
+type Config = {
+  GITHUB_TOKEN: string;
+  REPOSITORY: string | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const token = api.config.get("GITHUB_TOKEN");
+  const repository = api.config.get("REPOSITORY");
 
   return {
     async refresh() {

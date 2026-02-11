@@ -1,9 +1,14 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  TAG: string[] | undefined;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const tags = api.config.get("TAG");
+
   return {
     async refresh() {
-      const tags = api.config.get("TAG") as string[] | undefined;
       const url = tags && tags.length > 0
         ? `https://lobste.rs/t/${tags.join(",")}.json`
         : "https://lobste.rs/hottest.json";

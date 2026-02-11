@@ -1,6 +1,14 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+type Config = {
+  TAG: string[] | undefined;
+  SORT: string;
+};
+
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const tags = api.config.get("TAG") ?? [];
+  const sort = api.config.get("SORT") || "hot";
+
   return {
     async refresh() {
       type Question = {
@@ -13,9 +21,6 @@ export default (api: GlancewayAPI): SourceMethods => {
         tags: string[];
         creation_date: number;
       };
-
-      const tags = (api.config.get("TAG") as string[] | undefined) ?? [];
-      const sort = (api.config.get("SORT") as string) || "hot";
 
       const toItems = (questions: Question[]) =>
         questions.map((q) => ({
