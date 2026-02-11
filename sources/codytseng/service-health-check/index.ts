@@ -11,7 +11,7 @@ export default (api: GlancewayAPI): SourceMethods => {
       );
       const currentDownUrls = new Set<string>();
 
-      await Promise.all(
+      await Promise.allSettled(
         urls.map(async (url) => {
           const res = await api.fetch(url);
           if (!res.ok) {

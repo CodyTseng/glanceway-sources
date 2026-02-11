@@ -28,15 +28,14 @@ export default (api: GlancewayAPI): SourceMethods => {
 
       if (tags.length > 0) {
         const pageSize = Math.min(30, Math.floor(150 / tags.length));
-        await Promise.all(
+        await Promise.allSettled(
           tags.map(async (tag) => {
             const res = await api.fetch<{ items: Question[] }>(
               `https://api.stackexchange.com/2.3/questions?order=desc&sort=${sort}&site=stackoverflow&pagesize=${pageSize}&tagged=${encodeURIComponent(tag)}`,
             );
-            if (!res.ok || !res.json) {
-              throw new Error(`Failed to fetch Stack Overflow questions for tag "${tag}" (HTTP ${res.status})`);
+            if (res.ok && res.json) {
+              api.emit(toItems(res.json.items));
             }
-            api.emit(toItems(res.json.items));
           }),
         );
       } else {

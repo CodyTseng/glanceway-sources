@@ -280,4 +280,9 @@ function main() {
   console.log("README.md generated successfully");
 }
 
-main();
+try {
+  main();
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}

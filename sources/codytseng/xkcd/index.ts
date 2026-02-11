@@ -25,7 +25,7 @@ export default (api: GlancewayAPI): SourceMethods => {
       const count = 20;
       const comics: Comic[] = [latest];
 
-      await Promise.all(
+      await Promise.allSettled(
         Array.from({ length: count - 1 }, (_, i) => latest.num - i - 1)
           .filter((num) => num > 0 && num !== 404)
           .map(async (num) => {

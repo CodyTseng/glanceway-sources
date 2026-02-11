@@ -26,15 +26,14 @@ export default (api: GlancewayAPI): SourceMethods => {
         }));
 
       if (nodes.length > 0) {
-        await Promise.all(
+        await Promise.allSettled(
           nodes.map(async (node) => {
             const res = await api.fetch<Topic[]>(
               `https://www.v2ex.com/api/topics/show.json?node_name=${encodeURIComponent(node)}`,
             );
-            if (!res.ok || !res.json) {
-              throw new Error(`Failed to fetch V2EX topics for node "${node}" (HTTP ${res.status})`);
+            if (res.ok && res.json) {
+              api.emit(toItems(res.json));
             }
-            api.emit(toItems(res.json));
           }),
         );
       } else {

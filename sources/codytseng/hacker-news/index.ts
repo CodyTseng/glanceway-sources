@@ -25,7 +25,7 @@ export default (api: GlancewayAPI): SourceMethods => {
 
       const items: Story[] = [];
 
-      await Promise.all(
+      await Promise.allSettled(
         topIds.map(async (id) => {
           const res = await api.fetch<Story>(
             `https://hacker-news.firebaseio.com/v0/item/${id}.json`,

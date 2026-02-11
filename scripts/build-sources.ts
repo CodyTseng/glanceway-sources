@@ -131,25 +131,15 @@ async function compileTypeScript(indexPath: string): Promise<string> {
   const result = await esbuild.build({
     entryPoints: [indexPath],
     bundle: true,
-    platform: "node",
-    format: "esm",
+    platform: "neutral",
+    format: "iife",
+    globalName: "_source",
     write: false,
     external: ["node:*"],
+    footer: { js: "module.exports = _source.default;" },
   });
 
-  // Convert ESM default export to CJS module.exports for clean output.
-  // esbuild ESM with `export default` produces one of:
-  //   export { name as default };     (when hoisted to a var)
-  //   export default <expression>;    (inline)
-  const code = result.outputFiles[0].text;
-  const replaced = code
-    .replace(/^export\s*\{\s*(\w+)\s+as\s+default\s*\}\s*;?\s*$/m, "module.exports = $1;")
-    .replace(/^export\s+default\s+/m, "module.exports = ");
-
-  if (replaced === code) {
-    throw new Error(`No default export found in compiled output of ${indexPath}`);
-  }
-  return replaced;
+  return result.outputFiles[0].text;
 }
 
 async function createZip(
@@ -209,10 +199,7 @@ async function buildJsSource(source: SourceInfo): Promise<boolean> {
 
   // Create/update latest.zip
   const latestZipPath = path.join(distPath, "latest.zip");
-  await createZip(latestZipPath, [
-    { name: "manifest.yaml", content: manifestContent },
-    { name: "index.js", content: compiledJs },
-  ]);
+  fs.copyFileSync(versionedZipPath, latestZipPath);
 
   console.log(`  ✅ Created ${source.version}.zip and latest.zip`);
   return true;
@@ -248,7 +235,7 @@ async function buildYamlSource(source: SourceInfo): Promise<boolean> {
 
   // Create/update latest.yaml
   const latestYamlPath = path.join(distPath, "latest.yaml");
-  fs.writeFileSync(latestYamlPath, yamlContent);
+  fs.copyFileSync(versionedYamlPath, latestYamlPath);
 
   console.log(`  ✅ Created ${source.version}.yaml and latest.yaml`);
   return true;
@@ -267,28 +254,32 @@ async function main() {
 
   console.log(`Found ${sources.length} source(s)\n`);
 
+  const results = await Promise.allSettled(
+    sources.map(async (source) => {
+      if (source.type === "js") {
+        return buildJsSource(source);
+      } else {
+        return buildYamlSource(source);
+      }
+    }),
+  );
+
   let built = 0;
   let skipped = 0;
 
-  for (const source of sources) {
-    try {
-      let wasBuilt: boolean;
-
-      if (source.type === "js") {
-        wasBuilt = await buildJsSource(source);
-      } else {
-        wasBuilt = await buildYamlSource(source);
-      }
-
-      if (wasBuilt) {
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i];
+    if (result.status === "fulfilled") {
+      if (result.value) {
         built++;
       } else {
         skipped++;
       }
-    } catch (error) {
+    } else {
+      const source = sources[i];
       console.error(
         `  ❌ Error building ${source.author}/${source.sourceName}:`,
-        error,
+        result.reason,
       );
     }
   }
