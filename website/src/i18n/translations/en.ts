@@ -7,6 +7,18 @@ const en = {
   "hero.comingSoon": "Coming Soon",
   "hero.browseSources": "Browse Sources",
 
+  // Features section
+  "features.title": "Why Glanceway?",
+  "features.subtitle": "Stay aware of what's happening — without the noise.",
+  "features.lightweight.title": "Lightweight",
+  "features.lightweight.description": "Lives in your macOS menu bar. A quick glance is all you need — no need to switch apps or open a browser.",
+  "features.richSources.title": "All-in-One Awareness",
+  "features.richSources.description": "Breaking news, GitHub notifications, stock prices, Reddit trends, RSS feeds — stay on top of everything from a single menu bar.",
+  "features.extensible.title": "Extensible",
+  "features.extensible.description": "Write your own sources with simple YAML config or TypeScript plugins, or let AI generate them for you.",
+  "features.rss.title": "RSS Compatible",
+  "features.rss.description": "Import any RSS/Atom feed URL and start receiving updates instantly.",
+
   // Sources section
   "sources.title": "Sources",
   "sources.subtitle": "Community-built sources. One click to install.",

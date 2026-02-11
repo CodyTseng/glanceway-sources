@@ -9,6 +9,18 @@ const tr: Record<TranslationKey, string> = {
   "hero.comingSoon": "Yakında",
   "hero.browseSources": "Kaynakları Keşfet",
 
+  // Features section
+  "features.title": "Neden Glanceway?",
+  "features.subtitle": "Gürültü olmadan neler olup bittiğinden haberdar olun.",
+  "features.lightweight.title": "Hafif",
+  "features.lightweight.description": "macOS menü çubuğunda yaşar. Hızlı bir bakış yeterli — uygulama değiştirmeye veya tarayıcı açmaya gerek yok.",
+  "features.richSources.title": "Hepsi bir arada",
+  "features.richSources.description": "Son dakika haberleri, GitHub bildirimleri, hisse fiyatları, Reddit trendleri, RSS beslemeleri — hepsini tek bir menü çubuğundan takip edin.",
+  "features.extensible.title": "Genişletilebilir",
+  "features.extensible.description": "Basit YAML yapılandırması veya TypeScript eklentileriyle kendi kaynaklarınızı oluşturun ya da yapay zekânın sizin için oluşturmasını sağlayın.",
+  "features.rss.title": "RSS uyumlu",
+  "features.rss.description": "Herhangi bir RSS/Atom besleme URL'sini içe aktarın ve anında güncelleme almaya başlayın.",
+
   // Sources section
   "sources.title": "Kaynaklar",
   "sources.subtitle": "Topluluk tarafından oluşturulan kaynaklar. Tek tıkla yükleyin.",

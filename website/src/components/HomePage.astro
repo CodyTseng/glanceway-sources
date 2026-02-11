@@ -1,7 +1,7 @@
 ---
 import SourceCard from "./SourceCard.astro";
 import { getSources } from "../lib/sources";
-import { Download } from "@lucide/astro";
+import { Download, AppWindowMac, Layers, Puzzle, Rss } from "@lucide/astro";
 import { useTranslations, getLocalePath } from "../i18n/index";
 
 interface Props {
@@ -52,8 +52,58 @@ const categories = [
   </div>
 </div>
 
+<!-- Features -->
+<div class="bg-gray-100 dark:bg-gray-800">
+  <div class="mx-auto max-w-5xl px-6 py-24">
+    <h2 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+      {t("features.title")}
+    </h2>
+    <p class="mx-auto mt-4 mb-16 max-w-lg text-center text-base text-gray-500 dark:text-gray-400">
+      {t("features.subtitle")}
+    </p>
+    <div class="grid grid-cols-1 gap-x-12 gap-y-14 sm:grid-cols-2">
+      <div class="flex gap-5">
+        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-gray-700">
+          <AppWindowMac class="h-7 w-7 text-gray-600 dark:text-gray-300" />
+        </div>
+        <div>
+          <h3 class="mb-1.5 text-lg font-semibold text-gray-900 dark:text-white">{t("features.lightweight.title")}</h3>
+          <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{t("features.lightweight.description")}</p>
+        </div>
+      </div>
+      <div class="flex gap-5">
+        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-gray-700">
+          <Layers class="h-7 w-7 text-gray-600 dark:text-gray-300" />
+        </div>
+        <div>
+          <h3 class="mb-1.5 text-lg font-semibold text-gray-900 dark:text-white">{t("features.richSources.title")}</h3>
+          <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{t("features.richSources.description")}</p>
+        </div>
+      </div>
+      <div class="flex gap-5">
+        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-gray-700">
+          <Puzzle class="h-7 w-7 text-gray-600 dark:text-gray-300" />
+        </div>
+        <div>
+          <h3 class="mb-1.5 text-lg font-semibold text-gray-900 dark:text-white">{t("features.extensible.title")}</h3>
+          <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{t("features.extensible.description")}</p>
+        </div>
+      </div>
+      <div class="flex gap-5">
+        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-gray-700">
+          <Rss class="h-7 w-7 text-gray-600 dark:text-gray-300" />
+        </div>
+        <div>
+          <h3 class="mb-1.5 text-lg font-semibold text-gray-900 dark:text-white">{t("features.rss.title")}</h3>
+          <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{t("features.rss.description")}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Sources -->
-<div id="sources" class="scroll-mt-16">
+<div id="sources" class="scroll-mt-16 bg-gray-50 dark:bg-gray-950">
   <div class="mx-auto max-w-6xl px-6 py-12">
     <div class="mb-8 flex items-end justify-between gap-4">
       <div>

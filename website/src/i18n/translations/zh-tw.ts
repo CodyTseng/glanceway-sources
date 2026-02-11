@@ -10,6 +10,18 @@ const zhTw: Record<TranslationKey, string> = {
   "hero.comingSoon": "即將發布",
   "hero.browseSources": "瀏覽資料來源",
 
+  // Features section
+  "features.title": "為什麼選擇 Glanceway？",
+  "features.subtitle": "保持對世界的感知，而非被資訊淹沒。",
+  "features.lightweight.title": "輕量級",
+  "features.lightweight.description": "常駐 macOS 選單列，瞥一眼即可掌握動態——無需切換應用程式或開啟瀏覽器。",
+  "features.richSources.title": "一站式感知",
+  "features.richSources.description": "突發新聞、GitHub 通知、股票行情、Reddit 熱帖、RSS 訂閱——在一個選單列裡掌握一切。",
+  "features.extensible.title": "可擴充",
+  "features.extensible.description": "透過簡單的 YAML 設定或 TypeScript 外掛撰寫自訂資料來源，也可以讓 AI 幫你產生。",
+  "features.rss.title": "相容 RSS",
+  "features.rss.description": "匯入任意 RSS/Atom 訂閱連結，即刻接收更新。",
+
   // Sources section
   "sources.title": "資料來源",
   "sources.subtitle": "社群建置的資料來源，一鍵安裝。",

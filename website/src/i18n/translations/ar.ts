@@ -9,6 +9,18 @@ const ar: Record<TranslationKey, string> = {
   "hero.comingSoon": "قريبًا",
   "hero.browseSources": "تصفّح المصادر",
 
+  // Features section
+  "features.title": "لماذا Glanceway؟",
+  "features.subtitle": "ابقَ على اطّلاع بما يحدث — بلا ضوضاء.",
+  "features.lightweight.title": "خفيف الوزن",
+  "features.lightweight.description": "يعيش في شريط القوائم على macOS. نظرة سريعة تكفي — لا حاجة لتبديل التطبيقات أو فتح المتصفّح.",
+  "features.richSources.title": "الكل في واحد",
+  "features.richSources.description": "أخبار عاجلة، إشعارات GitHub، أسعار الأسهم، اتجاهات Reddit، خلاصات RSS — تابع كل شيء من شريط قوائم واحد.",
+  "features.extensible.title": "قابل للتوسعة",
+  "features.extensible.description": "أنشئ مصادرك الخاصة بإعدادات YAML بسيطة أو إضافات TypeScript، أو دع الذكاء الاصطناعي يُنشئها لك.",
+  "features.rss.title": "متوافق مع RSS",
+  "features.rss.description": "استورد أي رابط RSS/Atom وابدأ بتلقّي التحديثات فورًا.",
+
   // Sources section
   "sources.title": "المصادر",
   "sources.subtitle": "مصادر بناها المجتمع. تثبيت بنقرة واحدة.",

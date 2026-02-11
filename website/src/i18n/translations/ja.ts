@@ -9,6 +9,18 @@ const ja: Record<TranslationKey, string> = {
   "hero.comingSoon": "近日公開",
   "hero.browseSources": "ソースを探す",
 
+  // Features section
+  "features.title": "なぜ Glanceway？",
+  "features.subtitle": "ノイズなく、世の中の動きを把握する。",
+  "features.lightweight.title": "軽量",
+  "features.lightweight.description": "macOS メニューバーに常駐。チラッと見るだけで最新情報をキャッチ——アプリの切り替えもブラウザも不要。",
+  "features.richSources.title": "オールインワン",
+  "features.richSources.description": "ニュース速報、GitHub 通知、株価、Reddit トレンド、RSS フィード——すべてをひとつのメニューバーで。",
+  "features.extensible.title": "拡張可能",
+  "features.extensible.description": "シンプルな YAML 設定や TypeScript プラグインで独自ソースを作成。AI に生成させることも可能。",
+  "features.rss.title": "RSS 対応",
+  "features.rss.description": "RSS/Atom フィード URL をインポートするだけで、すぐに更新を受け取れます。",
+
   // Sources section
   "sources.title": "ソース",
   "sources.subtitle": "コミュニティが作成したソース。ワンクリックでインストール。",

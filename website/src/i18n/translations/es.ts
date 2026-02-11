@@ -9,6 +9,18 @@ const es: Record<TranslationKey, string> = {
   "hero.comingSoon": "Pr\u00f3ximamente",
   "hero.browseSources": "Explorar fuentes",
 
+  // Features section
+  "features.title": "¿Por qué Glanceway?",
+  "features.subtitle": "Mantente al tanto de lo que pasa — sin el ruido.",
+  "features.lightweight.title": "Ligero",
+  "features.lightweight.description": "Vive en tu barra de menús de macOS. Un vistazo rápido es todo lo que necesitas — sin cambiar de app ni abrir el navegador.",
+  "features.richSources.title": "Todo en uno",
+  "features.richSources.description": "Noticias de última hora, notificaciones de GitHub, precios de acciones, tendencias de Reddit, feeds RSS — todo desde una sola barra de menús.",
+  "features.extensible.title": "Extensible",
+  "features.extensible.description": "Crea tus propias fuentes con una simple configuración YAML o plugins TypeScript, o deja que la IA las genere por ti.",
+  "features.rss.title": "Compatible con RSS",
+  "features.rss.description": "Importa cualquier URL de feed RSS/Atom y comienza a recibir actualizaciones al instante.",
+
   // Sources section
   "sources.title": "Fuentes",
   "sources.subtitle": "Fuentes creadas por la comunidad. Un clic para instalar.",

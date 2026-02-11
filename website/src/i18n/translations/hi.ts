@@ -9,6 +9,18 @@ const hi: Record<TranslationKey, string> = {
   "hero.comingSoon": "जल्द आ रहा है",
   "hero.browseSources": "सोर्स देखें",
 
+  // Features section
+  "features.title": "Glanceway क्यों?",
+  "features.subtitle": "शोर के बिना दुनिया की खबर रखें।",
+  "features.lightweight.title": "हल्का",
+  "features.lightweight.description": "macOS मेन्यू बार में रहता है। एक नज़र काफ़ी है — ऐप बदलने या ब्राउज़र खोलने की ज़रूरत नहीं।",
+  "features.richSources.title": "ऑल-इन-वन",
+  "features.richSources.description": "ब्रेकिंग न्यूज़, GitHub नोटिफ़िकेशन, स्टॉक प्राइस, Reddit ट्रेंड्स, RSS फ़ीड — सब कुछ एक मेन्यू बार से।",
+  "features.extensible.title": "विस्तार योग्य",
+  "features.extensible.description": "सरल YAML कॉन्फ़िग या TypeScript प्लगइन से अपने सोर्स बनाएँ, या AI से बनवाएँ।",
+  "features.rss.title": "RSS संगत",
+  "features.rss.description": "कोई भी RSS/Atom फ़ीड URL इंपोर्ट करें और तुरंत अपडेट पाना शुरू करें।",
+
   // Sources section
   "sources.title": "सोर्स",
   "sources.subtitle": "समुदाय द्वारा बनाए गए सोर्स। एक क्लिक में इंस्टॉल करें।",

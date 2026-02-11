@@ -9,6 +9,18 @@ const ru: Record<TranslationKey, string> = {
   "hero.comingSoon": "Скоро",
   "hero.browseSources": "Обзор источников",
 
+  // Features section
+  "features.title": "Почему Glanceway?",
+  "features.subtitle": "Будьте в курсе происходящего — без лишнего шума.",
+  "features.lightweight.title": "Лёгкий",
+  "features.lightweight.description": "Живёт в строке меню macOS. Достаточно одного взгляда — не нужно переключать приложения или открывать браузер.",
+  "features.richSources.title": "Всё в одном",
+  "features.richSources.description": "Срочные новости, уведомления GitHub, котировки акций, тренды Reddit, RSS-ленты — всё в одной строке меню.",
+  "features.extensible.title": "Расширяемый",
+  "features.extensible.description": "Создавайте собственные источники с помощью простой YAML-конфигурации или TypeScript-плагинов, или пусть ИИ сгенерирует их за вас.",
+  "features.rss.title": "Поддержка RSS",
+  "features.rss.description": "Импортируйте любой URL RSS/Atom-ленты и мгновенно начните получать обновления.",
+
   // Sources section
   "sources.title": "Источники",
   "sources.subtitle": "Источники от сообщества. Установка в один клик.",

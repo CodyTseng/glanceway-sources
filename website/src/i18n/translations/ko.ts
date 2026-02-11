@@ -9,6 +9,18 @@ const ko: Record<TranslationKey, string> = {
   "hero.comingSoon": "곧 출시",
   "hero.browseSources": "소스 둘러보기",
 
+  // Features section
+  "features.title": "왜 Glanceway인가요?",
+  "features.subtitle": "소음 없이 세상 돌아가는 일을 파악하세요.",
+  "features.lightweight.title": "가벼움",
+  "features.lightweight.description": "macOS 메뉴 바에 상주합니다. 한 번 흘끗 보는 것만으로 충분 — 앱 전환이나 브라우저가 필요 없습니다.",
+  "features.richSources.title": "올인원 인식",
+  "features.richSources.description": "속보, GitHub 알림, 주가, Reddit 트렌드, RSS 피드 — 하나의 메뉴 바에서 모든 것을 파악하세요.",
+  "features.extensible.title": "확장 가능",
+  "features.extensible.description": "간단한 YAML 설정이나 TypeScript 플러그인으로 나만의 소스를 만들거나, AI가 대신 생성해 줍니다.",
+  "features.rss.title": "RSS 호환",
+  "features.rss.description": "RSS/Atom 피드 URL을 가져오기만 하면 즉시 업데이트를 받을 수 있습니다.",
+
   // Sources section
   "sources.title": "소스",
   "sources.subtitle": "커뮤니티가 만든 소스를 클릭 한 번으로 설치하세요.",
