@@ -1,6 +1,6 @@
-# TypeScript Source Development
+# JavaScript Source Development
 
-TypeScript sources provide full control over data fetching and processing.
+JavaScript sources provide full control over data fetching and processing.
 
 ## Quick Start
 
@@ -22,7 +22,7 @@ Or run `npm run create-source` for the interactive prompts.
 ```
 sources/your-username/my-source/
 ├── manifest.yaml    # Source metadata
-└── index.ts         # Source logic
+└── index.ts         # Source logic (compiled to JS at build time)
 ```
 
 ## manifest.yaml
@@ -66,7 +66,7 @@ config:
 
 ## Source Lifecycle
 
-TypeScript sources have two distinct phases:
+Sources have two distinct phases:
 
 1. **Start phase**: When the source is first loaded, the default export function runs. The app does **NOT** call `refresh()` at this point. Sources should `await` their initial data fetch before returning.
 2. **Refresh phase**: On each scheduled refresh interval, the app calls `refresh()`. This is the only time `refresh()` is invoked.
@@ -76,18 +76,12 @@ TypeScript sources have two distinct phases:
 
 Extract fetch logic into a named async function, `await` it in the outer closure, and assign it as the `refresh` method:
 
-```typescript
-import type { GlancewayAPI, SourceMethods } from "../../types";
-
-type Config = {
-  API_TOKEN: string;
-};
-
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
+```javascript
+export default async (api) => {
   const token = api.config.get("API_TOKEN");
 
   async function fetchData() {
-    const response = await api.fetch<{ items: Item[] }>(
+    const response = await api.fetch(
       "https://api.example.com/items",
       { headers: { Authorization: `Bearer ${token}` } },
     );
@@ -132,7 +126,7 @@ interface InfoItem {
 
 All these formats are valid:
 
-```typescript
+```javascript
 // ISO 8601 string
 timestamp: "2024-01-15T10:30:00Z";
 
@@ -150,17 +144,10 @@ timestamp: new Date();
 
 Read config **in the outer closure** (before `return`), not inside the fetch function. When config changes, Glanceway reloads the entire script, so the outer closure always has fresh values.
 
-Use `GlancewayAPI<Config>` to get type-safe config access:
-
-```typescript
-type Config = {
-  API_TOKEN: string;
-  TAGS: string[];
-};
-
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
-  const token = api.config.get("API_TOKEN");  // string
-  const tags = api.config.get("TAGS");        // string[]
+```javascript
+export default async (api) => {
+  const token = api.config.get("API_TOKEN");
+  const tags = api.config.get("TAGS");
 
   async function fetchData() {
     // use token and tags directly
@@ -178,12 +165,12 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 
 Store data between refreshes:
 
-```typescript
-export default async (api: GlancewayAPI): Promise<SourceMethods> => {
+```javascript
+export default async (api) => {
   async function fetchData() {
     const lastId = api.storage.get("lastId");
 
-    const response = await api.fetch<Item[]>("https://api.example.com/items");
+    const response = await api.fetch("https://api.example.com/items");
 
     if (!response.ok || !response.json) {
       throw new Error(`Failed to fetch items (HTTP ${response.status})`);
@@ -217,8 +204,8 @@ export default async (api: GlancewayAPI): Promise<SourceMethods> => {
 
 For real-time data sources, use WebSocket in the start phase and skip `refresh`:
 
-```typescript
-export default async (api: GlancewayAPI): Promise<SourceMethods> => {
+```javascript
+export default async (api) => {
   const ws = await api.websocket.connect("wss://stream.example.com", {
     onConnect(connection) {
       api.log("info", "Connected to stream");
@@ -257,9 +244,9 @@ export default async (api: GlancewayAPI): Promise<SourceMethods> => {
 
 For the main/only request, throw on failure. For parallel sub-requests, skip failures silently.
 
-```typescript
+```javascript
 // Single request: throw on failure
-const res = await api.fetch<Article[]>(url);
+const res = await api.fetch(url);
 if (!res.ok || !res.json) {
   throw new Error(`Failed to fetch articles (HTTP ${res.status})`);
 }
@@ -270,10 +257,10 @@ api.emit(toItems(res.json));
 
 Always use `Promise.allSettled` (never `Promise.all`) for parallel requests:
 
-```typescript
+```javascript
 await Promise.allSettled(
   ids.map(async (id) => {
-    const res = await api.fetch<Item>(
+    const res = await api.fetch(
       `https://api.example.com/items/${id}`,
     );
     if (res.ok && res.json) {
@@ -286,11 +273,7 @@ await Promise.allSettled(
 
 ## Development Constraints
 
-- **NO external imports.** The only allowed import is the type import:
-  ```typescript
-  import type { GlancewayAPI, SourceMethods } from "../../types";
-  ```
-- All functionality is provided through the `api` parameter.
+- **NO external imports.** All functionality is provided through the `api` parameter.
 - **Maximize items per fetch.** The app does not paginate, so fetch as many items as the API allows (hard limit: 500).
 
 ## Tips

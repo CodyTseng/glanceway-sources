@@ -280,9 +280,9 @@ parse:
 3. **Use config for secrets** - Never hardcode API tokens
 4. **Always use `subtitle`** - Map any descriptive text to subtitle for maximum information at a glance
 
-## When to Use TypeScript Instead
+## When to Use JavaScript Instead
 
-Consider a TypeScript source when you need:
+Consider a JavaScript source when you need:
 - Multiple API calls or conditional logic
 - Complex data transformations (e.g., URL rewriting, combining fields)
 - WebSocket connections

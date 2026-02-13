@@ -6,12 +6,8 @@ Complete reference for the Glanceway Source API.
 
 The API object is passed to your source's default export function:
 
-```typescript
-import type { GlancewayAPI, SourceMethods } from "../../types";
-
-export default async (api: GlancewayAPI): Promise<SourceMethods> => {
-  // api is available here
-
+```javascript
+export default async (api) => {
   async function fetchData() {
     /* fetch, transform, emit */
   }
@@ -33,10 +29,6 @@ export default async (api: GlancewayAPI): Promise<SourceMethods> => {
 
 Sends information items to Glanceway for display.
 
-```typescript
-emit(items: InfoItem[]): void
-```
-
 ### InfoItem
 
 ```typescript
@@ -51,7 +43,7 @@ interface InfoItem {
 
 ### Example
 
-```typescript
+```javascript
 api.emit([
   {
     id: "123",
@@ -67,7 +59,7 @@ api.emit([
 
 All of these are valid:
 
-```typescript
+```javascript
 // ISO 8601 string
 timestamp: "2024-01-15T10:30:00Z";
 
@@ -83,13 +75,9 @@ timestamp: new Date();
 
 ---
 
-## api.fetch\<T\>(url, options?)
+## api.fetch(url, options?)
 
-Makes HTTP requests. Supports generics for typed JSON responses.
-
-```typescript
-fetch<T>(url: string, options?: FetchOptions): Promise<FetchResponse<T>>
-```
+Makes HTTP requests.
 
 ### FetchOptions
 
@@ -102,38 +90,35 @@ interface FetchOptions {
 }
 ```
 
-### FetchResponse\<T\>
+### FetchResponse
 
 ```typescript
-interface FetchResponse<T> {
+interface FetchResponse {
   ok: boolean;                       // true if status 200-299
   status: number;                    // HTTP status code
   headers: Record<string, string>;   // Response headers
   text: string;                      // Raw response body
-  json?: T;                          // Parsed JSON (if valid)
+  json?: any;                        // Parsed JSON (if valid)
   error?: string;                    // Error message if request failed
 }
 ```
 
 ### Examples
 
-#### Typed GET Request
+#### GET Request
 
-```typescript
-const response = await api.fetch<{ items: Article[] }>(
-  "https://api.example.com/data",
-);
+```javascript
+const response = await api.fetch("https://api.example.com/data");
 
 if (response.ok && response.json) {
-  // response.json is typed as { items: Article[] }
   const articles = response.json.items;
 }
 ```
 
 #### POST Request
 
-```typescript
-const response = await api.fetch<Result>(
+```javascript
+const response = await api.fetch(
   "https://api.example.com/data",
   {
     method: "POST",
@@ -150,7 +135,7 @@ const response = await api.fetch<Result>(
 
 #### With Timeout
 
-```typescript
+```javascript
 const response = await api.fetch("https://slow-api.example.com/data", {
   timeout: 60000, // 60 seconds
 });
@@ -160,15 +145,11 @@ const response = await api.fetch("https://slow-api.example.com/data", {
 
 ## api.log(level, message)
 
-Logs messages for debugging.
-
-```typescript
-log(level: 'info' | 'error' | 'warn' | 'debug', message: string): void
-```
+Logs messages for debugging. Levels: `"info"`, `"error"`, `"warn"`, `"debug"`.
 
 ### Examples
 
-```typescript
+```javascript
 api.log("info", "Starting refresh");
 api.log("debug", `Fetched ${items.length} items`);
 api.log("warn", "Rate limit approaching");
@@ -199,14 +180,7 @@ interface StorageAPI {
 
 ## api.config
 
-Access user-configured values from manifest.yaml. Use `GlancewayAPI<Config>` generic for type-safe access.
-
-```typescript
-interface ConfigAPI<TConfig> {
-  get<K extends keyof TConfig>(key: K): TConfig[K];
-  getAll(): TConfig;
-}
-```
+Access user-configured values from manifest.yaml.
 
 ### manifest.yaml Configuration
 
@@ -227,14 +201,8 @@ config:
 
 ### Examples
 
-```typescript
-type Config = {
-  API_TOKEN: string;
-  TAGS: string[];
-};
-
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
-  // Type-safe config access
+```javascript
+export default async (api) => {
   const token = api.config.get("API_TOKEN");  // string
   const tags = api.config.get("TAGS");        // string[]
 
@@ -251,7 +219,7 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 
 Current Glanceway app version string (e.g., `"1.2.0"`).
 
-```typescript
+```javascript
 api.log("info", `Running on Glanceway ${api.appVersion}`);
 ```
 
@@ -262,13 +230,6 @@ api.log("info", `Running on Glanceway ${api.appVersion}`);
 Create WebSocket connections for real-time data.
 
 ```typescript
-interface WebSocketAPI {
-  connect(
-    url: string,
-    callbacks: WebSocketCallbacks,
-  ): Promise<WebSocketConnection>;
-}
-
 interface WebSocketCallbacks {
   onConnect?: (ws: WebSocketConnection) => void;
   onMessage?: (data: string) => void;
@@ -284,8 +245,8 @@ interface WebSocketConnection {
 
 ### Example
 
-```typescript
-export default async (api: GlancewayAPI): Promise<SourceMethods> => {
+```javascript
+export default async (api) => {
   const ws = await api.websocket.connect("wss://stream.example.com", {
     onConnect(connection) {
       api.log("info", "Connected");
@@ -323,11 +284,9 @@ export default async (api: GlancewayAPI): Promise<SourceMethods> => {
 
 ## Source Export
 
-Your source module must export an async function that receives the API and returns `Promise<SourceMethods>`.
+Your source module must export an async function that receives the API and returns an object with optional `refresh` and `stop` methods.
 
 ```typescript
-type SourceExport = (api: GlancewayAPI) => SourceMethods | Promise<SourceMethods>;
-
 interface SourceMethods {
   refresh?: () => Promise<void> | void;
   stop?: () => Promise<void> | void;
@@ -338,8 +297,8 @@ interface SourceMethods {
 
 The default export function runs when the source is loaded. It should `await` the initial data fetch before returning. The app does NOT call `refresh()` on initial load.
 
-```typescript
-export default async (api: GlancewayAPI): Promise<SourceMethods> => {
+```javascript
+export default async (api) => {
   async function fetchData() {
     // Fetch and emit data
   }
