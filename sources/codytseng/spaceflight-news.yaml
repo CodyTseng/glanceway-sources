@@ -10,7 +10,7 @@ tags:
   - spaceflight
 
 source:
-  url: https://api.spaceflightnewsapi.net/v4/articles/?limit=25
+  url: https://api.spaceflightnewsapi.net/v4/articles/?limit=100
   method: GET
 
 parse:

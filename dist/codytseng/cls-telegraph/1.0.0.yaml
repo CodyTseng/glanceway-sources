@@ -11,7 +11,7 @@ tags:
   - market
 
 source:
-  url: https://www.cls.cn/nodeapi/telegraphList?app=CailianpressWeb&os=web&refresh_type=1&rn=30&sv=8.4.6
+  url: https://www.cls.cn/nodeapi/telegraphList?app=CailianpressWeb&os=web&refresh_type=1&rn=200&sv=8.4.6
   method: GET
   headers:
     Referer: https://www.cls.cn/

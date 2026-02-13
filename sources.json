@@ -1,7 +1,76 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-02-13T08:58:56.282Z",
+  "updated_at": "2026-02-13T14:18:19.457Z",
   "sources": [
+    {
+      "id": "codytseng/cls-telegraph",
+      "name": "财联社电报",
+      "description": "财联社电报快讯",
+      "author": "codytseng",
+      "author_url": "https://github.com/codytseng",
+      "category": "Finance",
+      "tags": [
+        "finance",
+        "news",
+        "chinese",
+        "market"
+      ],
+      "type": "yaml",
+      "latest_version": "1.0.0",
+      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/cls-telegraph.yaml",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/cls-telegraph/1.0.0.yaml"
+        }
+      ]
+    },
+    {
+      "id": "codytseng/wallstreetcn",
+      "name": "华尔街见闻",
+      "description": "华尔街见闻 7x24 快讯",
+      "author": "codytseng",
+      "author_url": "https://github.com/codytseng",
+      "category": "Finance",
+      "tags": [
+        "finance",
+        "news",
+        "chinese",
+        "market"
+      ],
+      "type": "yaml",
+      "latest_version": "1.0.0",
+      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/wallstreetcn.yaml",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/wallstreetcn/1.0.0.yaml"
+        }
+      ]
+    },
+    {
+      "id": "codytseng/jin10",
+      "name": "金十数据",
+      "description": "金十数据快讯",
+      "author": "codytseng",
+      "author_url": "https://github.com/codytseng",
+      "category": "Finance",
+      "tags": [
+        "finance",
+        "news",
+        "chinese",
+        "market"
+      ],
+      "type": "js",
+      "latest_version": "1.0.0",
+      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/jin10",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/jin10/1.0.0.zip"
+        }
+      ]
+    },
     {
       "id": "codytseng/cn-stock-price",
       "name": "A 股股价监控",
@@ -461,75 +530,6 @@
         {
           "version": "1.0.0",
           "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/xkcd/1.0.0.zip"
-        }
-      ]
-    },
-    {
-      "id": "codytseng/wallstreetcn",
-      "name": "华尔街见闻",
-      "description": "华尔街见闻 7x24 快讯",
-      "author": "codytseng",
-      "author_url": "https://github.com/codytseng",
-      "category": "Finance",
-      "tags": [
-        "finance",
-        "news",
-        "chinese",
-        "market"
-      ],
-      "type": "yaml",
-      "latest_version": "1.0.0",
-      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/wallstreetcn.yaml",
-      "versions": [
-        {
-          "version": "1.0.0",
-          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/wallstreetcn/1.0.0.yaml"
-        }
-      ]
-    },
-    {
-      "id": "codytseng/cls-telegraph",
-      "name": "财联社电报",
-      "description": "财联社电报快讯",
-      "author": "codytseng",
-      "author_url": "https://github.com/codytseng",
-      "category": "Finance",
-      "tags": [
-        "finance",
-        "news",
-        "chinese",
-        "market"
-      ],
-      "type": "yaml",
-      "latest_version": "1.0.0",
-      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/cls-telegraph.yaml",
-      "versions": [
-        {
-          "version": "1.0.0",
-          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/cls-telegraph/1.0.0.yaml"
-        }
-      ]
-    },
-    {
-      "id": "codytseng/jin10",
-      "name": "金十数据",
-      "description": "金十数据快讯",
-      "author": "codytseng",
-      "author_url": "https://github.com/codytseng",
-      "category": "Finance",
-      "tags": [
-        "finance",
-        "news",
-        "chinese",
-        "market"
-      ],
-      "type": "js",
-      "latest_version": "1.0.0",
-      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/jin10",
-      "versions": [
-        {
-          "version": "1.0.0",
-          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/jin10/1.0.0.zip"
         }
       ]
     }

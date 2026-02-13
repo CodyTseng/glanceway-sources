@@ -26,7 +26,7 @@ config:
       - hk-stock-channel
 
 source:
-  url: https://api-one.wallstcn.com/apiv1/content/lives?channel=${CHANNEL}&limit=30
+  url: https://api-one.wallstcn.com/apiv1/content/lives?channel=${CHANNEL}&limit=200
   method: GET
 
 parse:
