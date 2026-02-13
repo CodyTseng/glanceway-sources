@@ -175,10 +175,15 @@ All functionality is provided through the `api` parameter. Use `export default` 
 
 ```typescript
 export default (api: GlancewayAPI<Config>): SourceMethods => {
+  async function fetchData() {
+    /* fetch, transform, emit */
+  }
+
+  // Start phase: initial fetch
+  fetchData();
+
   return {
-    async refresh() {
-      /* ... */
-    },
+    refresh: fetchData,
     stop() {
       /* optional cleanup */
     },
@@ -192,7 +197,7 @@ All methods are available on the `api: GlancewayAPI` parameter.
 
 ### api.emit(items: InfoItem[])
 
-Send items to Glanceway for display. Call this in `refresh()`.
+Send items to Glanceway for display.
 
 ```typescript
 interface InfoItem {
@@ -314,6 +319,40 @@ config: # Optional: user-configurable values
       - top
 ```
 
+## Source Lifecycle
+
+TypeScript sources have two distinct phases:
+
+1. **Start phase**: When the source is first loaded, the default export function (outer closure) runs. The app does **NOT** call `refresh()` at this point. Sources should perform their initial data fetch here by calling their fetch function directly (fire-and-forget, without `await`).
+2. **Refresh phase**: On each scheduled refresh interval, the app calls `refresh()`. This is the only time `refresh()` is invoked.
+
+This separation allows sources to distinguish between initial load and periodic refresh, enabling different behavior if needed (e.g., full load on start vs. incremental update on refresh). For most sources, both phases do the same work.
+
+### Standard Pattern
+
+Extract the fetch logic into a named async function, call it in the outer closure for the start phase, and assign it as the `refresh` method:
+
+```typescript
+export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const token = api.config.get("API_TOKEN");
+
+  async function fetchData() {
+    const res = await api.fetch<Item[]>(url);
+    if (!res.ok || !res.json) {
+      throw new Error(`Failed to fetch (HTTP ${res.status})`);
+    }
+    api.emit(toItems(res.json));
+  }
+
+  // Start phase: initial fetch
+  fetchData();
+
+  return {
+    refresh: fetchData,
+  };
+};
+```
+
 ## Source Design Guidelines
 
 - Always make full use of the `subtitle` field. If the API response contains summary, description, brief, or any descriptive text, map it to `subtitle` so users get maximum information at a glance.
@@ -350,11 +389,16 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
   // 5. Config reading (in outer closure; script reloads on config change)
   const token = api.config.get("API_TOKEN");
 
+  // 6. Fetch function (fetch, transform, emit)
+  async function fetchData() {
+    // ...
+  }
+
+  // 7. Start phase: initial fetch
+  fetchData();
+
   return {
-    // 6. Fetch, transform, emit
-    async refresh() {
-      // ...
-    },
+    refresh: fetchData,
   };
 };
 ```
@@ -370,28 +414,38 @@ type Config = {
 };
 
 export default (api: GlancewayAPI<Config>): SourceMethods => {
+  const sort = api.config.get("SORT");   // string
+  const tags = api.config.get("TAGS");   // string[]
+  // api.config.get("TYPO")              // compile error
+
+  async function fetchData() {
+    // use sort, tags directly
+  }
+
+  fetchData();
+
   return {
-    async refresh() {
-      const sort = api.config.get("SORT");   // string
-      const tags = api.config.get("TAGS");   // string[]
-      // api.config.get("TYPO")              // compile error
-    },
+    refresh: fetchData,
   };
 };
 ```
 
 ### Config Reading
 
-Read config **in the outer closure** (before `return`), not inside `refresh()`. When config changes, Glanceway reloads the entire script, so the outer closure always has fresh values.
+Read config **in the outer closure** (before `return`), not inside the fetch function. When config changes, Glanceway reloads the entire script, so the outer closure always has fresh values.
 
 ```typescript
 export default (api: GlancewayAPI<Config>): SourceMethods => {
   const sort = api.config.get("SORT") || "hot";
 
+  async function fetchData() {
+    // use sort directly
+  }
+
+  fetchData();
+
   return {
-    async refresh() {
-      // use sort directly
-    },
+    refresh: fetchData,
   };
 };
 ```
@@ -439,7 +493,7 @@ await Promise.allSettled(
 
 ### Helper Functions
 
-Define reusable mapping functions (e.g., `toItems`) **inside `refresh()`** when they use closure variables. Define pure utility functions (e.g., `stripHtml`) **at the module top** before the export.
+Define reusable mapping functions (e.g., `toItems`) **inside the fetch function** when they use closure variables. Define pure utility functions (e.g., `stripHtml`) **at the module top** before the export.
 
 ```typescript
 // Module top: pure utility, no dependency on api or config
@@ -448,18 +502,22 @@ function stripHtml(html: string): string {
 }
 
 export default (api: GlancewayAPI): SourceMethods => {
+  async function fetchData() {
+    // Inside fetch function: uses closure variables
+    const toItems = (articles: Article[]) =>
+      articles.map((a) => ({
+        id: a.id.toString(),
+        title: a.title,
+        subtitle: stripHtml(a.description),
+        url: a.url,
+        timestamp: a.published_at,
+      }));
+  }
+
+  fetchData();
+
   return {
-    async refresh() {
-      // Inside refresh: uses closure variables (toItems references api context)
-      const toItems = (articles: Article[]) =>
-        articles.map((a) => ({
-          id: a.id.toString(),
-          title: a.title,
-          subtitle: stripHtml(a.description),
-          url: a.url,
-          timestamp: a.published_at,
-        }));
-    },
+    refresh: fetchData,
   };
 };
 ```

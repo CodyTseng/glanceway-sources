@@ -155,7 +155,7 @@ export interface WebSocketConnection {
  * Source methods returned by your source function
  */
 export interface SourceMethods {
-  /** Called on startup and periodically based on user settings */
+  /** Called periodically based on user settings (NOT called on initial load) */
   refresh?: () => Promise<void> | void;
 
   /** Called when source is stopped (for cleanup) */

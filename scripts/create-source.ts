@@ -106,20 +106,25 @@ tags:${tagsStr}
 const INDEX_TEMPLATE = `import type { GlancewayAPI, SourceMethods } from "../../types";
 
 export default (api: GlancewayAPI): SourceMethods => {
-  return {
-    async refresh() {
-      // Example: Fetch data from an API
-      const response = await api.fetch("https://api.example.com/items");
+  async function fetchData() {
+    // Example: Fetch data from an API
+    const response = await api.fetch("https://api.example.com/items");
 
-      if (response.ok && response.json) {
-        const items = response.json.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          url: item.url,
-        }));
-        api.emit(items);
-      }
-    },
+    if (response.ok && response.json) {
+      const items = response.json.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        url: item.url,
+      }));
+      api.emit(items);
+    }
+  }
+
+  // Start phase: initial fetch
+  fetchData();
+
+  return {
+    refresh: fetchData,
   };
 };
 `;
