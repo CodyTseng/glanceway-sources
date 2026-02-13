@@ -9,16 +9,18 @@ YAML sources let you define data extraction rules for JSON APIs without writing 
 version: 1.0.0
 name: Display Name
 description: Brief description of the source
-author: Author Name  # or object with name and url
-category: Category
+author: authorname
+author_url: https://github.com/authorname
+category: Developer
 tags:
   - tag1
   - tag2
 
 # Optional: User-configurable fields
 config:
-  - key: api_token
+  - key: API_TOKEN
     name: API Token
+    type: secret
     description: Your API token
     required: true
 
@@ -27,11 +29,11 @@ source:
   url: https://api.example.com/data
   method: GET
   headers:
-    Authorization: Bearer ${api_token}
+    Authorization: Bearer ${API_TOKEN}
 
-# Parsing rules (JSONPath)
+# Parsing rules
 parse:
-  root: $.data[*]
+  root: $.data
   mapping:
     id: $.id
     title: $.name
@@ -47,10 +49,10 @@ parse:
 | `version` | Yes | Semantic version (e.g., `1.0.0`) |
 | `name` | Yes | Display name shown in Glanceway |
 | `description` | Yes | Brief description of the source |
-| `author` | Yes | Author name (string) or object with `name` and `url` |
+| `author` | Yes | Author name (string) |
+| `author_url` | No | Author URL (e.g., GitHub profile) |
 | `category` | Yes | Category for grouping |
 | `tags` | No | Array of tags for filtering |
-| `interval` | No | Refresh interval in seconds (default: 300) |
 | `min_app_version` | No | Minimum Glanceway app version required (e.g., `1.2.0`) |
 
 ## Categories
@@ -70,20 +72,19 @@ Define user-configurable values:
 
 ```yaml
 config:
-  - key: api_token
+  - key: API_TOKEN
     name: API Token
     type: secret         # string, number, boolean, secret, select, or list
     description: Your personal API token
     required: true
 
-  - key: username
+  - key: USERNAME
     name: Username
     type: string
     description: Optional username filter
     required: false
-    default: ""
 
-  - key: sort
+  - key: SORT
     name: Sort Order
     type: select         # select requires an options list
     description: Sort order for results
@@ -97,13 +98,13 @@ config:
 
 When a config field has a fixed set of possible values, use `type: select` with an `options` array instead of `type: string`.
 
-Reference in source using `${key}`:
+Reference in source using `${KEY}`:
 
 ```yaml
 source:
-  url: https://api.example.com/users/${username}/data
+  url: https://api.example.com/users/${USERNAME}/data
   headers:
-    Authorization: Bearer ${api_token}
+    Authorization: Bearer ${API_TOKEN}
 ```
 
 ## Source Configuration
@@ -122,7 +123,7 @@ source:
 source:
   url: https://api.example.com/data
   headers:
-    Authorization: Bearer ${token}
+    Authorization: Bearer ${API_TOKEN}
     Accept: application/json
     X-Custom-Header: value
 ```
@@ -245,36 +246,6 @@ parse:
       notEquals: "draft"
 ```
 
-### Filter Operations
-
-| Operator | Description |
-|----------|-------------|
-| `equals` | Exact match |
-| `notEquals` | Not equal |
-| `contains` | Contains substring |
-| `notContains` | Does not contain substring |
-| `matches` | Regex match |
-| `exists` | Field exists (true/false) |
-| `empty` | Field is empty (true/false) |
-
-## URL Transformations
-
-Transform URLs using regex inside the `parse` section:
-
-```yaml
-parse:
-  root: $.data
-  mapping:
-    id: $.id
-    title: $.title
-    url: $.api_url
-  urlTransform:
-    - pattern: /api/
-      replacement: /web/
-```
-
-Supports capture groups (`$1`, `$2`, etc.) in `replacement`.
-
 ## Complete Example
 
 ```yaml
@@ -282,13 +253,14 @@ version: 1.0.0
 name: Dev.to
 description: Top articles from Dev.to
 author: example
+author_url: https://github.com/example
 category: Developer
 tags:
   - dev
   - articles
 
 source:
-  url: https://dev.to/api/articles?per_page=30&top=7
+  url: https://dev.to/api/articles?per_page=500&top=7
   method: GET
 
 parse:
@@ -303,18 +275,18 @@ parse:
 
 ## Tips
 
-1. **Test your JSONPath** - Use tools like [JSONPath Online](https://jsonpath.com/) to test expressions
-2. **Start simple** - Begin with basic extraction, add filters later
-3. **Check API docs** - Understand the API response structure first
-4. **Use config for secrets** - Never hardcode API tokens
+1. **Start simple** - Begin with basic extraction, add filters later
+2. **Check API docs** - Understand the API response structure first
+3. **Use config for secrets** - Never hardcode API tokens
+4. **Always use `subtitle`** - Map any descriptive text to subtitle for maximum information at a glance
 
 ## When to Use TypeScript Instead
 
 Consider a TypeScript source when you need:
-- Multiple API calls
-- Complex data transformations
+- Multiple API calls or conditional logic
+- Complex data transformations (e.g., URL rewriting, combining fields)
 - WebSocket connections
-- Pagination handling
-- OAuth authentication
+- Pagination or OAuth
+- Persistent storage between refreshes
 
 See [JS Source Development](./js-source.md) for more.

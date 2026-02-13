@@ -4,21 +4,30 @@ Complete reference for the Glanceway Source API.
 
 ## API Object
 
-The API object is passed to your source's main function:
+The API object is passed to your source's default export function:
 
-```javascript
-module.exports = (api) => {
+```typescript
+import type { GlancewayAPI, SourceMethods } from "../../types";
+
+export default async (api: GlancewayAPI): Promise<SourceMethods> => {
   // api is available here
+
+  async function fetchData() {
+    /* fetch, transform, emit */
+  }
+
+  await fetchData();
+
   return {
-    refresh() {
-      /* ... */
-    },
+    refresh: fetchData,
     stop() {
-      /* ... */
+      /* optional cleanup */
     },
   };
 };
 ```
+
+---
 
 ## api.emit(items)
 
@@ -32,17 +41,17 @@ emit(items: InfoItem[]): void
 
 ```typescript
 interface InfoItem {
-  id: string | number; // Required: unique identifier
-  title: string; // Required: main display text
-  subtitle?: string; // Optional: secondary text
-  url?: string; // Optional: clickable link
-  timestamp?: Date | string | number; // Optional: item time
+  id: string;                        // Required: unique identifier
+  title: string;                     // Required: main display text
+  subtitle?: string;                 // Optional: secondary text
+  url?: string;                      // Optional: clickable link
+  timestamp?: Date | string | number // Optional: item time
 }
 ```
 
 ### Example
 
-```javascript
+```typescript
 api.emit([
   {
     id: "123",
@@ -58,7 +67,7 @@ api.emit([
 
 All of these are valid:
 
-```javascript
+```typescript
 // ISO 8601 string
 timestamp: "2024-01-15T10:30:00Z";
 
@@ -74,12 +83,12 @@ timestamp: new Date();
 
 ---
 
-## api.fetch(url, options?)
+## api.fetch\<T\>(url, options?)
 
-Makes HTTP requests.
+Makes HTTP requests. Supports generics for typed JSON responses.
 
 ```typescript
-fetch(url: string, options?: FetchOptions): Promise<FetchResponse>
+fetch<T>(url: string, options?: FetchOptions): Promise<FetchResponse<T>>
 ```
 
 ### FetchOptions
@@ -93,49 +102,55 @@ interface FetchOptions {
 }
 ```
 
-### FetchResponse
+### FetchResponse\<T\>
 
 ```typescript
-interface FetchResponse {
-  ok: boolean; // true if status 200-299
-  status: number; // HTTP status code
-  headers: Record<string, string>; // Response headers
-  text: string; // Raw response body
-  json?: unknown; // Parsed JSON (if valid)
+interface FetchResponse<T> {
+  ok: boolean;                       // true if status 200-299
+  status: number;                    // HTTP status code
+  headers: Record<string, string>;   // Response headers
+  text: string;                      // Raw response body
+  json?: T;                          // Parsed JSON (if valid)
+  error?: string;                    // Error message if request failed
 }
 ```
 
 ### Examples
 
-#### GET Request
+#### Typed GET Request
 
-```javascript
-const response = await api.fetch("https://api.example.com/data");
+```typescript
+const response = await api.fetch<{ items: Article[] }>(
+  "https://api.example.com/data",
+);
 
 if (response.ok && response.json) {
-  const data = response.json;
-  // Process data...
+  // response.json is typed as { items: Article[] }
+  const articles = response.json.items;
 }
 ```
 
 #### POST Request
 
-```javascript
-const response = await api.fetch("https://api.example.com/data", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer token123",
+```typescript
+const response = await api.fetch<Result>(
+  "https://api.example.com/data",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer token123",
+    },
+    body: JSON.stringify({
+      query: "search term",
+    }),
   },
-  body: JSON.stringify({
-    query: "search term",
-  }),
-});
+);
 ```
 
 #### With Timeout
 
-```javascript
+```typescript
 const response = await api.fetch("https://slow-api.example.com/data", {
   timeout: 60000, // 60 seconds
 });
@@ -153,7 +168,7 @@ log(level: 'info' | 'error' | 'warn' | 'debug', message: string): void
 
 ### Examples
 
-```javascript
+```typescript
 api.log("info", "Starting refresh");
 api.log("debug", `Fetched ${items.length} items`);
 api.log("warn", "Rate limit approaching");
@@ -164,7 +179,7 @@ api.log("error", "Failed to connect");
 
 ## api.storage
 
-Persistent key-value storage that survives between refreshes.
+Persistent key-value storage that survives between refreshes and app restarts.
 
 ```typescript
 interface StorageAPI {
@@ -176,20 +191,20 @@ interface StorageAPI {
 ### Use Cases
 
 - Tracking last seen item ID
-- Caching data between refreshes
+- Caching data between refreshes (e.g., company names)
 - Storing pagination cursors
-- Remembering user preferences
+- Remembering state for change detection
 
 ---
 
 ## api.config
 
-Access user-configured values from manifest.yaml.
+Access user-configured values from manifest.yaml. Use `GlancewayAPI<Config>` generic for type-safe access.
 
 ```typescript
-interface ConfigAPI {
-  get(key: string): string | undefined;
-  getAll(): Record<string, string>;
+interface ConfigAPI<TConfig> {
+  get<K extends keyof TConfig>(key: K): TConfig[K];
+  getAll(): TConfig;
 }
 ```
 
@@ -197,33 +212,37 @@ interface ConfigAPI {
 
 ```yaml
 config:
-  - key: api_token
+  - key: API_TOKEN
     name: API Token
+    type: secret
     description: Your API token
     required: true
 
-  - key: filter
-    name: Filter
-    description: Optional filter
+  - key: TAGS
+    name: Tags
+    type: list
+    description: Tags to filter by
     required: false
 ```
 
 ### Examples
 
-```javascript
-// Get single value
-const token = api.config.get("api_token");
-const filter = api.config.get("filter");
+```typescript
+type Config = {
+  API_TOKEN: string;
+  TAGS: string[];
+};
 
-// Check required config
-if (!token) {
-  api.log("error", "API token is required");
-  return;
-}
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
+  // Type-safe config access
+  const token = api.config.get("API_TOKEN");  // string
+  const tags = api.config.get("TAGS");        // string[]
 
-// Get all config values
-const allConfig = api.config.getAll();
-// { api_token: '...', filter: '...' }
+  // Get all config values
+  const allConfig = api.config.getAll();
+
+  // ...
+};
 ```
 
 ---
@@ -232,7 +251,7 @@ const allConfig = api.config.getAll();
 
 Current Glanceway app version string (e.g., `"1.2.0"`).
 
-```javascript
+```typescript
 api.log("info", `Running on Glanceway ${api.appVersion}`);
 ```
 
@@ -265,46 +284,36 @@ interface WebSocketConnection {
 
 ### Example
 
-```javascript
-module.exports = (api) => {
-  let connection = null;
-
-  return {
-    async refresh() {
-      if (connection) return;
-
-      connection = await api.websocket.connect("wss://stream.example.com", {
-        onConnect(ws) {
-          api.log("info", "Connected");
-          ws.send(JSON.stringify({ type: "subscribe" }));
-        },
-
-        onMessage(data) {
-          const event = JSON.parse(data);
-          api.emit([
-            {
-              id: event.id,
-              title: event.message,
-            },
-          ]);
-        },
-
-        onError(error) {
-          api.log("error", `Error: ${error}`);
-        },
-
-        onClose(code) {
-          api.log("info", `Closed: ${code}`);
-          connection = null;
-        },
-      });
+```typescript
+export default async (api: GlancewayAPI): Promise<SourceMethods> => {
+  const ws = await api.websocket.connect("wss://stream.example.com", {
+    onConnect(connection) {
+      api.log("info", "Connected");
+      connection.send(JSON.stringify({ type: "subscribe" }));
     },
 
+    onMessage(data) {
+      const event = JSON.parse(data);
+      api.emit([
+        {
+          id: event.id,
+          title: event.message,
+        },
+      ]);
+    },
+
+    onError(error) {
+      api.log("error", `Error: ${error}`);
+    },
+
+    onClose(code) {
+      api.log("info", `Closed: ${code}`);
+    },
+  });
+
+  return {
     stop() {
-      if (connection) {
-        connection.close();
-        connection = null;
-      }
+      ws.close();
     },
   };
 };
@@ -314,142 +323,62 @@ module.exports = (api) => {
 
 ## Source Export
 
-Your source module must export a function that receives the API and returns source methods.
+Your source module must export an async function that receives the API and returns `Promise<SourceMethods>`.
 
 ```typescript
-type SourceExport = (api: GlancewayAPI) => SourceMethods | void;
+type SourceExport = (api: GlancewayAPI) => SourceMethods | Promise<SourceMethods>;
 
 interface SourceMethods {
   refresh?: () => Promise<void> | void;
   stop?: () => Promise<void> | void;
 }
+```
+
+### Start Phase (Default Export)
+
+The default export function runs when the source is loaded. It should `await` the initial data fetch before returning. The app does NOT call `refresh()` on initial load.
+
+```typescript
+export default async (api: GlancewayAPI): Promise<SourceMethods> => {
+  async function fetchData() {
+    // Fetch and emit data
+  }
+
+  await fetchData();
+
+  return {
+    refresh: fetchData,
+  };
+};
 ```
 
 ### refresh()
 
-Called when the source starts and periodically based on user settings.
-
-```javascript
-module.exports = (api) => {
-  return {
-    async refresh() {
-      // Fetch and emit data
-    },
-  };
-};
-```
+Called periodically based on user settings. NOT called on initial load.
 
 ### stop()
 
-Called when the source is stopped or removed. Use for cleanup.
-
-```javascript
-module.exports = (api) => {
-  let interval = null;
-
-  return {
-    refresh() {
-      interval = setInterval(() => {
-        // Custom polling
-      }, 5000);
-    },
-
-    stop() {
-      if (interval) {
-        clearInterval(interval);
-      }
-    },
-  };
-};
-```
+Called when the source is stopped or removed. Use for cleanup (e.g., closing WebSocket connections).
 
 ---
 
-## TypeScript Definitions
+## TypeScript Type Definitions
 
-For TypeScript development, here are the complete type definitions:
+For TypeScript development, import types from `../../types`:
 
 ```typescript
-// === Main API Interface ===
-interface GlancewayAPI {
-  emit(items: InfoItem[]): void;
-  fetch(url: string, options?: FetchOptions): Promise<FetchResponse>;
-  log(level: "info" | "error" | "warn" | "debug", message: string): void;
-  storage: StorageAPI;
-  config: ConfigAPI;
-  websocket: WebSocketAPI;
-  appVersion: string;
-}
-
-// === Information Item ===
-interface InfoItem {
-  id: string | number;
-  title: string;
-  subtitle?: string;
-  url?: string;
-  timestamp?: Date | string | number;
-}
-
-// === HTTP Fetch ===
-interface FetchOptions {
-  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-  headers?: Record<string, string>;
-  body?: string;
-  timeout?: number;
-}
-
-interface FetchResponse {
-  ok: boolean;
-  status: number;
-  headers: Record<string, string>;
-  text: string;
-  json?: unknown;
-}
-
-// === Storage ===
-interface StorageAPI {
-  get(key: string): string | undefined;
-  set(key: string, value: string): void;
-}
-
-// === Config ===
-interface ConfigAPI {
-  get(key: string): string | undefined;
-  getAll(): Record<string, string>;
-}
-
-// === WebSocket ===
-interface WebSocketAPI {
-  connect(
-    url: string,
-    callbacks: WebSocketCallbacks,
-  ): Promise<WebSocketConnection>;
-}
-
-interface WebSocketCallbacks {
-  onConnect?: (ws: WebSocketConnection) => void;
-  onMessage?: (data: string) => void;
-  onError?: (error: string) => void;
-  onClose?: (code: number) => void;
-}
-
-interface WebSocketConnection {
-  send(message: string): Promise<void>;
-  close(): void;
-}
-
-// === Source Export ===
-type SourceExport = (api: GlancewayAPI) => SourceMethods | void;
-
-interface SourceMethods {
-  refresh?: () => Promise<void> | void;
-  stop?: () => Promise<void> | void;
-}
-
-declare const module: { exports: SourceExport };
+import type { GlancewayAPI, SourceMethods } from "../../types";
 ```
 
-Create a new source using the interactive CLI:
+The complete type definitions are available in the `sources/types.ts` file. Key interfaces:
+
+- `GlancewayAPI<TConfig>` - Main API object (supports Config generic)
+- `SourceMethods` - Return type with `refresh` and `stop`
+- `InfoItem` - Item emitted for display
+- `FetchOptions` / `FetchResponse<T>` - HTTP request/response types
+- `WebSocketCallbacks` / `WebSocketConnection` - WebSocket types
+
+Create a new source using the CLI:
 
 ```bash
 npm run create-source
