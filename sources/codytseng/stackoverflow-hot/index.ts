@@ -5,7 +5,7 @@ type Config = {
   SORT: string;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const tags = api.config.get("TAG") ?? [];
   const sort = api.config.get("SORT") || "hot";
 
@@ -53,7 +53,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     }
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

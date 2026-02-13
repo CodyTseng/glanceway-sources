@@ -32,7 +32,7 @@ type Config = {
   STOCK_CODES: string[] | undefined;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const codes = api.config.get("STOCK_CODES") ?? [];
 
   async function fetchData() {
@@ -78,7 +78,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     api.emit(items);
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

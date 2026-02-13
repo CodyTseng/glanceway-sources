@@ -4,7 +4,7 @@ type Config = {
   LANGUAGE: string | undefined;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const language = api.config.get("LANGUAGE");
 
   async function fetchData() {
@@ -46,7 +46,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     );
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

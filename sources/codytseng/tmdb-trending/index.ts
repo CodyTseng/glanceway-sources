@@ -6,7 +6,7 @@ type Config = {
   TIME_WINDOW: string;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const apiKey = api.config.get("TMDB_API_KEY");
   const mediaType = api.config.get("MEDIA_TYPE") || "all";
   const timeWindow = api.config.get("TIME_WINDOW") || "week";
@@ -40,7 +40,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     api.emit(items);
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

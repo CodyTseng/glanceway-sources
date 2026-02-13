@@ -4,7 +4,7 @@ type Config = {
   KEYWORD: string;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const keyword = api.config.get("KEYWORD") || "typescript";
 
   async function fetchData() {
@@ -51,7 +51,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     );
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

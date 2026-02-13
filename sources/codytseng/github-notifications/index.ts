@@ -5,7 +5,7 @@ type Config = {
   REPOSITORY: string | undefined;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const token = api.config.get("GITHUB_TOKEN");
   const repository = api.config.get("REPOSITORY");
 
@@ -57,7 +57,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     api.emit(items as InfoItem[]);
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

@@ -4,7 +4,7 @@ type Config = {
   NODE_NAME: string[] | undefined;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const nodes = api.config.get("NODE_NAME") ?? [];
 
   async function fetchData() {
@@ -50,7 +50,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     }
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

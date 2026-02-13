@@ -105,7 +105,7 @@ tags:${tagsStr}
 
 const INDEX_TEMPLATE = `import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+export default async (api: GlancewayAPI): Promise<SourceMethods> => {
   async function fetchData() {
     // Example: Fetch data from an API
     const response = await api.fetch("https://api.example.com/items");
@@ -121,7 +121,7 @@ export default (api: GlancewayAPI): SourceMethods => {
   }
 
   // Start phase: initial fetch
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

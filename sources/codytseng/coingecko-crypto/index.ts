@@ -31,7 +31,7 @@ function currencySymbol(currency: string): string {
   }
 }
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const currency = api.config.get("CURRENCY") || "usd";
   const order = api.config.get("ORDER") || "market_cap_desc";
 
@@ -64,7 +64,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     api.emit(items);
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

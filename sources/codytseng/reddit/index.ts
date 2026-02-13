@@ -5,7 +5,7 @@ type Config = {
   SORT: string;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const subreddits = api.config.get("SUBREDDIT") ?? ["programming"];
   const subreddit = subreddits.join("+");
   const sort = api.config.get("SORT") || "hot";
@@ -52,7 +52,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     );
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

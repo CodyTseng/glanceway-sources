@@ -4,7 +4,7 @@ type Config = {
   TAG: string[] | undefined;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const tags = api.config.get("TAG");
 
   async function fetchData() {
@@ -47,7 +47,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     );
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

@@ -21,7 +21,7 @@ type Config = {
   SYMBOLS: string[] | undefined;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const token = api.config.get("FINNHUB_TOKEN");
   const symbolsRaw = api.config.get("SYMBOLS") ?? [];
 
@@ -76,7 +76,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     api.emit(items);
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

@@ -4,7 +4,7 @@ type Config = {
   API_TOKEN: string;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const token = api.config.get("API_TOKEN");
 
   async function fetchData() {
@@ -62,7 +62,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     );
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

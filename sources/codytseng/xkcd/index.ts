@@ -1,6 +1,6 @@
 import type { GlancewayAPI, SourceMethods } from "../../types";
 
-export default (api: GlancewayAPI): SourceMethods => {
+export default async (api: GlancewayAPI): Promise<SourceMethods> => {
   async function fetchData() {
     type Comic = {
       num: number;
@@ -47,7 +47,7 @@ export default (api: GlancewayAPI): SourceMethods => {
     );
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

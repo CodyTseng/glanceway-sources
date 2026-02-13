@@ -174,13 +174,13 @@ import type { GlancewayAPI, SourceMethods } from "../../types";
 All functionality is provided through the `api` parameter. Use `export default` for the default export. Use `GlancewayAPI<Config>` generic when config fields are defined:
 
 ```typescript
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   async function fetchData() {
     /* fetch, transform, emit */
   }
 
   // Start phase: initial fetch
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,
@@ -323,7 +323,7 @@ config: # Optional: user-configurable values
 
 TypeScript sources have two distinct phases:
 
-1. **Start phase**: When the source is first loaded, the default export function (outer closure) runs. The app does **NOT** call `refresh()` at this point. Sources should perform their initial data fetch here by calling their fetch function directly (fire-and-forget, without `await`).
+1. **Start phase**: When the source is first loaded, the default export function (outer closure) runs. The app does **NOT** call `refresh()` at this point. Sources should perform their initial data fetch here by `await`ing their fetch function before returning.
 2. **Refresh phase**: On each scheduled refresh interval, the app calls `refresh()`. This is the only time `refresh()` is invoked.
 
 This separation allows sources to distinguish between initial load and periodic refresh, enabling different behavior if needed (e.g., full load on start vs. incremental update on refresh). For most sources, both phases do the same work.
@@ -333,7 +333,7 @@ This separation allows sources to distinguish between initial load and periodic 
 Extract the fetch logic into a named async function, call it in the outer closure for the start phase, and assign it as the `refresh` method:
 
 ```typescript
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const token = api.config.get("API_TOKEN");
 
   async function fetchData() {
@@ -345,7 +345,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
   }
 
   // Start phase: initial fetch
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,
@@ -385,8 +385,8 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, "");
 }
 
-// 4. Default export (with Config generic)
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+// 4. Default export (async, with Config generic)
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   // 5. Config reading (in outer closure; script reloads on config change)
   const token = api.config.get("API_TOKEN");
 
@@ -395,8 +395,8 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     // ...
   }
 
-  // 7. Start phase: initial fetch
-  fetchData();
+  // 7. Start phase: initial fetch (awaited before returning)
+  await fetchData();
 
   return {
     refresh: fetchData,
@@ -414,7 +414,7 @@ type Config = {
   TAGS: string[];
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const sort = api.config.get("SORT");   // string
   const tags = api.config.get("TAGS");   // string[]
   // api.config.get("TYPO")              // compile error
@@ -423,7 +423,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     // use sort, tags directly
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,
@@ -436,14 +436,14 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
 Read config **in the outer closure** (before `return`), not inside the fetch function. When config changes, Glanceway reloads the entire script, so the outer closure always has fresh values.
 
 ```typescript
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const sort = api.config.get("SORT") || "hot";
 
   async function fetchData() {
     // use sort directly
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,
@@ -502,7 +502,7 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, "");
 }
 
-export default (api: GlancewayAPI): SourceMethods => {
+export default async (api: GlancewayAPI): Promise<SourceMethods> => {
   async function fetchData() {
     // Inside fetch function: uses closure variables
     const toItems = (articles: Article[]) =>
@@ -515,7 +515,7 @@ export default (api: GlancewayAPI): SourceMethods => {
       }));
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

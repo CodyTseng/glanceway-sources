@@ -19,7 +19,7 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, "").trim();
 }
 
-export default (api: GlancewayAPI): SourceMethods => {
+export default async (api: GlancewayAPI): Promise<SourceMethods> => {
   async function fetchData() {
     const response = await api.fetch<Jin10Response>(
       "https://flash-api.jin10.com/get_flash_list?channel=-8200&vip=1",
@@ -71,7 +71,7 @@ export default (api: GlancewayAPI): SourceMethods => {
     api.emit(items);
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

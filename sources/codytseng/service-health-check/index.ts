@@ -4,7 +4,7 @@ type Config = {
   URLS: string[] | undefined;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const urls = api.config.get("URLS");
 
   async function fetchData() {
@@ -39,7 +39,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     api.storage.set("downUrls", JSON.stringify(Array.from(currentDownUrls)));
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,

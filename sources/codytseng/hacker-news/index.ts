@@ -4,7 +4,7 @@ type Config = {
   STORY_TYPE: string;
 };
 
-export default (api: GlancewayAPI<Config>): SourceMethods => {
+export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
   const storyType = api.config.get("STORY_TYPE") || "top";
 
   async function fetchData() {
@@ -50,7 +50,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     );
   }
 
-  fetchData();
+  await fetchData();
 
   return {
     refresh: fetchData,
