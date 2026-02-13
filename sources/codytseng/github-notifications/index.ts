@@ -11,8 +11,8 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
 
   async function fetchData() {
     const url = repository
-      ? `https://api.github.com/repos/${repository}/notifications`
-      : "https://api.github.com/notifications";
+      ? `https://api.github.com/repos/${repository}/notifications?per_page=100`
+      : "https://api.github.com/notifications?per_page=100";
 
     const response = await api.fetch<
       {

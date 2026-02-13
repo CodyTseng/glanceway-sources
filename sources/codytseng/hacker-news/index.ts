@@ -15,7 +15,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
       throw new Error(`Failed to fetch Hacker News story list (HTTP ${idsResponse.status})`);
     }
 
-    const topIds = idsResponse.json.slice(0, 50);
+    const topIds = idsResponse.json.slice(0, 100);
 
     type Story = {
       id: number;

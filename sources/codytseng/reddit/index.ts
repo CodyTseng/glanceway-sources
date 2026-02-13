@@ -28,7 +28,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
           };
         }>;
       };
-    }>(`https://www.reddit.com/r/${subreddit}/${sort}.json?limit=30&raw_json=1`, {
+    }>(`https://www.reddit.com/r/${subreddit}/${sort}.json?limit=100&raw_json=1`, {
       headers: { "User-Agent": "Glanceway/1.0" },
     });
 

@@ -356,6 +356,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
 ## Source Design Guidelines
 
 - Always make full use of the `subtitle` field. If the API response contains summary, description, brief, or any descriptive text, map it to `subtitle` so users get maximum information at a glance.
+- **Maximize items per fetch.** The app does not paginate, so each fetch should retrieve as many items as the API allows without hurting performance. The hard upper limit is **500 items** — never exceed this. For APIs with a configurable page size, set it to the API's maximum or 500, whichever is smaller. For sources that make N parallel sub-requests (e.g., Hacker News, xkcd), keep N reasonable to avoid excessive latency.
 
 ## TypeScript Source Code Conventions
 

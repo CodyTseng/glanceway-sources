@@ -27,7 +27,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
         language: string | null;
       }>;
     }>(
-      `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=30`,
+      `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=100`,
     );
 
     if (!response.ok || !response.json) {

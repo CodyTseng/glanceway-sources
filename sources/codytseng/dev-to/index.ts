@@ -30,7 +30,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
       }));
 
     if (tags.length > 0) {
-      const perPage = Math.min(30, Math.floor(150 / tags.length));
+      const perPage = Math.min(500, Math.floor(500 / tags.length));
       await Promise.allSettled(
         tags.map(async (tag) => {
           const res = await api.fetch<Article[]>(
@@ -43,7 +43,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
       );
     } else {
       const res = await api.fetch<Article[]>(
-        "https://dev.to/api/articles?per_page=30&top=7",
+        "https://dev.to/api/articles?per_page=500&top=7",
       );
       if (!res.ok || !res.json) {
         throw new Error(`Failed to fetch DEV articles (HTTP ${res.status})`);

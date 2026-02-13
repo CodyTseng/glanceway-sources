@@ -21,7 +21,7 @@ export default (api: GlancewayAPI): SourceMethods => {
     }
 
     const latest = latestRes.json;
-    const count = 20;
+    const count = 50;
     const comics: Comic[] = [latest];
 
     await Promise.allSettled(

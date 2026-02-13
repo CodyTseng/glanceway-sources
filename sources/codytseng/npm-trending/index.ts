@@ -26,7 +26,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     };
 
     const res = await api.fetch<NpmSearchResult>(
-      `https://registry.npmjs.org/-/v1/search?text=${encodeURIComponent(keyword)}&popularity=1.0&quality=0.5&maintenance=0.0&size=30`,
+      `https://registry.npmjs.org/-/v1/search?text=${encodeURIComponent(keyword)}&popularity=1.0&quality=0.5&maintenance=0.0&size=250`,
     );
 
     if (!res.ok || !res.json) {

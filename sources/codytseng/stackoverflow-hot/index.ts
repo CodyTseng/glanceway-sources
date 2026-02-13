@@ -31,7 +31,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
       }));
 
     if (tags.length > 0) {
-      const pageSize = Math.min(30, Math.floor(150 / tags.length));
+      const pageSize = Math.min(100, Math.floor(500 / tags.length));
       await Promise.allSettled(
         tags.map(async (tag) => {
           const res = await api.fetch<{ items: Question[] }>(
@@ -44,7 +44,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
       );
     } else {
       const res = await api.fetch<{ items: Question[] }>(
-        `https://api.stackexchange.com/2.3/questions?order=desc&sort=${sort}&site=stackoverflow&pagesize=30`,
+        `https://api.stackexchange.com/2.3/questions?order=desc&sort=${sort}&site=stackoverflow&pagesize=100`,
       );
       if (!res.ok || !res.json) {
         throw new Error(`Failed to fetch Stack Overflow questions (HTTP ${res.status})`);

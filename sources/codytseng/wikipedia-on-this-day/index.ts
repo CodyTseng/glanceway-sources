@@ -34,7 +34,9 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
     const response = await api.fetch<OnThisDayResponse>(url);
 
     if (!response.ok || !response.json) {
-      throw new Error(`Failed to fetch Wikipedia On This Day (HTTP ${response.status})`);
+      throw new Error(
+        `Failed to fetch Wikipedia On This Day (HTTP ${response.status})`,
+      );
     }
 
     const events = [
@@ -59,7 +61,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
         url: page?.content_urls?.desktop?.page,
       });
 
-      if (items.length >= 25) break;
+      if (items.length >= 200) break;
     }
 
     api.emit(items);

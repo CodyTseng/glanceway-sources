@@ -36,7 +36,7 @@ export default (api: GlancewayAPI<Config>): SourceMethods => {
   const order = api.config.get("ORDER") || "market_cap_desc";
 
   async function fetchData() {
-    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${order}&per_page=25&sparkline=false`;
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=${order}&per_page=250&sparkline=false`;
 
     const response = await api.fetch<CoinMarket[]>(url);
 
