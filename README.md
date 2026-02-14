@@ -38,6 +38,10 @@ Community information sources for [Glanceway](https://glanceway.app).
 - **[Product Hunt](sources/codytseng/product-hunt)** by [codytseng](https://github.com/codytseng) - Today's top products from Product Hunt [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/product-hunt/latest.zip)]
 - **[Spaceflight News](sources/codytseng/spaceflight-news.yaml)** by [codytseng](https://github.com/codytseng) - Latest space and spaceflight news articles from SNAPI [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/spaceflight-news/latest.yaml)]
 
+### Productivity
+
+- **[AI Prompt](sources/codytseng/ai-prompt)** by [codytseng](https://github.com/codytseng) - Send a prompt to an AI model and display the response [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/ai-prompt/latest.zip)]
+
 ### Social
 
 - **[Reddit](sources/codytseng/reddit)** by [codytseng](https://github.com/codytseng) - Hot posts from a subreddit [[Download](https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/reddit/latest.zip)]

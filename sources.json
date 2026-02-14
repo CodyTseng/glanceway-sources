@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-02-13T14:19:39.909Z",
+  "updated_at": "2026-02-14T04:25:18.463Z",
   "sources": [
     {
       "id": "codytseng/cn-stock-price",
@@ -22,6 +22,27 @@
         {
           "version": "1.0.0",
           "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/cn-stock-price/1.0.0.zip"
+        }
+      ]
+    },
+    {
+      "id": "codytseng/ai-prompt",
+      "name": "AI Prompt",
+      "description": "Send a prompt to an AI model and display the response",
+      "author": "codytseng",
+      "author_url": "https://github.com/codytseng",
+      "category": "Productivity",
+      "tags": [
+        "ai",
+        "llm"
+      ],
+      "type": "js",
+      "latest_version": "1.0.0",
+      "source_url": "https://github.com/codytseng/glanceway-sources/tree/master/sources/codytseng/ai-prompt",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "download_url": "https://github.com/codytseng/glanceway-sources/raw/refs/heads/master/dist/codytseng/ai-prompt/1.0.0.zip"
         }
       ]
     },
