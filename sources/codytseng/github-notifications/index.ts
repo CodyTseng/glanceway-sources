@@ -1,4 +1,4 @@
-import type { GlancewayAPI, InfoItem, SourceMethods } from "../../types";
+import type { GlancewayAPI, InfoItem, SourceMethods } from "./types";
 
 type Config = {
   GITHUB_TOKEN: string;

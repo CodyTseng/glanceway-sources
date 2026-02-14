@@ -1,4 +1,4 @@
-import type { GlancewayAPI, SourceMethods } from "../../types";
+import type { GlancewayAPI, SourceMethods } from "./types";
 
 interface StockItem {
   f1: number; // decimal precision

@@ -1,4 +1,4 @@
-import type { GlancewayAPI, SourceMethods } from "../../types";
+import type { GlancewayAPI, SourceMethods } from "./types";
 
 type Config = {
   SUBREDDIT: string[] | undefined;

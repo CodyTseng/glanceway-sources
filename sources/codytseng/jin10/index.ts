@@ -1,4 +1,4 @@
-import type { GlancewayAPI, InfoItem, SourceMethods } from "../../types";
+import type { GlancewayAPI, InfoItem, SourceMethods } from "./types";
 
 interface Jin10FlashItem {
   id: string;

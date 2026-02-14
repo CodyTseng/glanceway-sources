@@ -1,4 +1,4 @@
-import type { GlancewayAPI, SourceMethods } from "../../types";
+import type { GlancewayAPI, SourceMethods } from "./types";
 
 export default async (api: GlancewayAPI): Promise<SourceMethods> => {
   async function fetchData() {

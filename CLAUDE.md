@@ -102,8 +102,11 @@ Create `sources/<author>/<source-name>/` with two files: `manifest.yaml` and `in
 ```
 sources/myname/my-source/
 ├── manifest.yaml
-└── index.ts
+├── index.ts
+└── types.ts
 ```
+
+Copy `types.ts` from any existing source (e.g., `sources/codytseng/hacker-news/types.ts`).
 
 ### Step 2: Implement index.ts
 
@@ -148,7 +151,7 @@ npm run build-sources -- --source myname/my-source
 **NO external imports.** Sources cannot use `import` or `require` for external packages. The only allowed import is the type import:
 
 ```typescript
-import type { GlancewayAPI, SourceMethods } from "../../types";
+import type { GlancewayAPI, SourceMethods } from "./types";
 ```
 
 All functionality is provided through the `api` parameter. Use `export default` for the default export. Use `GlancewayAPI<Config>` generic when config fields are defined:
@@ -344,7 +347,7 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 
 ```typescript
 // 1. Type import (always first)
-import type { GlancewayAPI, SourceMethods } from "../../types";
+import type { GlancewayAPI, SourceMethods } from "./types";
 
 // 2. Type definitions (config, response types, data models)
 type Config = {
