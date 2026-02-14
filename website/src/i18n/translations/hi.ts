@@ -5,25 +5,47 @@ const hi: Record<TranslationKey, string> = {
   "hero.title": "सब कुछ एक नज़र में",
   "hero.description": "एक हल्का macOS मेन्यू बार ऐप जो आपको ज़रूरी चीज़ों से अपडेट रखता है — डेवलपर समाचार, सोशल फ़ीड, अलर्ट, और बहुत कुछ।",
   "hero.tagline": "कोई भटकाव नहीं, कोई ओवरलोड नहीं।",
-  "hero.download": "macOS के लिए डाउनलोड करें",
+  "hero.download": "Get on Mac App Store",
   "hero.comingSoon": "जल्द आ रहा है",
   "hero.browseSources": "सोर्स देखें",
 
+  // App Preview
+  "appPreview.title": "See it in action",
+  "appPreview.subtitle": "Everything you care about, one glance away from your menu bar.",
+
   // Features section
-  "features.title": "Glanceway क्यों?",
-  "features.subtitle": "शोर के बिना दुनिया की खबर रखें।",
-  "features.lightweight.title": "हल्का",
-  "features.lightweight.description": "macOS मेन्यू बार में रहता है। एक नज़र काफ़ी है — ऐप बदलने या ब्राउज़र खोलने की ज़रूरत नहीं।",
-  "features.richSources.title": "ऑल-इन-वन",
-  "features.richSources.description": "ब्रेकिंग न्यूज़, GitHub नोटिफ़िकेशन, स्टॉक प्राइस, Reddit ट्रेंड्स, RSS फ़ीड — सब कुछ एक मेन्यू बार से।",
-  "features.extensible.title": "विस्तार योग्य",
-  "features.extensible.description": "सरल YAML कॉन्फ़िग या TypeScript प्लगइन से अपने सोर्स बनाएँ, या AI से बनवाएँ।",
-  "features.rss.title": "RSS संगत",
-  "features.rss.description": "कोई भी RSS/Atom फ़ीड URL इंपोर्ट करें और तुरंत अपडेट पाना शुरू करें।",
+  "features.title": "Your menu bar, infinite possibilities",
+  "features.subtitle": "More than an information aggregator — a programmable awareness layer for your Mac.",
+  "features.stayInformed.title": "Stay Informed",
+  "features.stayInformed.description": "Hacker News, Reddit, Product Hunt — trending content streams right into your menu bar.",
+  "features.monitorMarkets.title": "Monitor Markets",
+  "features.monitorMarkets.description": "Real-time stock quotes, crypto prices, and financial flash news at a glance.",
+  "features.devToolkit.title": "Developer Toolkit",
+  "features.devToolkit.description": "GitHub notifications, trending repos, npm packages, and StackOverflow — your dev pulse.",
+  "features.trackEverything.title": "Track Everything",
+  "features.trackEverything.description": "Earthquake alerts, spaceflight news, TV schedules — follow anything you care about.",
+  "features.buildYourOwn.title": "Build Your Own",
+  "features.buildYourOwn.description": "A few lines of YAML or TypeScript, or let AI generate one for you.",
+  "features.buildYourOwn.link": "Read the docs",
+  "features.rssAndBeyond.title": "RSS & Beyond",
+  "features.rssAndBeyond.description": "Native RSS/Atom support. Pair with RSSHub to unlock thousands of data sources.",
+  "features.rssAndBeyond.link": "Explore RSSHub",
+  "features.browseSources": "Browse Sources",
+
+  // Open Platform
+  "openPlatform.title": "An open source ecosystem",
+  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, TypeScript for full control.",
+  "openPlatform.browseSources": "Browse Sources",
+
+  // CTA
+  "cta.title": "Ready to stay in the loop?",
+  "cta.description": "Download Glanceway and turn your menu bar into a personal information hub.",
 
   // Sources section
   "sources.title": "सोर्स",
   "sources.subtitle": "समुदाय द्वारा बनाए गए सोर्स। एक क्लिक में इंस्टॉल करें।",
+  "sources.pageTitle": "Sources",
+  "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "RSS फ़ीड URL सीधे इंपोर्ट करने का भी समर्थन करता है। हज़ारों रूट्स खोजें",
   "sources.submitSource": "सोर्स सबमिट करें",
   "sources.emptyTitle": "इस श्रेणी में अभी कोई सोर्स नहीं है",

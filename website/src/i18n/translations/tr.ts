@@ -5,25 +5,47 @@ const tr: Record<TranslationKey, string> = {
   "hero.title": "Her şey bir bakışta",
   "hero.description": "Sizi önemli gelişmelerden haberdar tutan hafif bir macOS menü çubuğu uygulaması — geliştirici haberleri, sosyal akışlar, bildirimler ve daha fazlası.",
   "hero.tagline": "Dikkat dağınıklığı yok, bilgi yüklemesi yok.",
-  "hero.download": "macOS için indir",
+  "hero.download": "Get on Mac App Store",
   "hero.comingSoon": "Yakında",
   "hero.browseSources": "Kaynakları Keşfet",
 
+  // App Preview
+  "appPreview.title": "See it in action",
+  "appPreview.subtitle": "Everything you care about, one glance away from your menu bar.",
+
   // Features section
-  "features.title": "Neden Glanceway?",
-  "features.subtitle": "Gürültü olmadan neler olup bittiğinden haberdar olun.",
-  "features.lightweight.title": "Hafif",
-  "features.lightweight.description": "macOS menü çubuğunda yaşar. Hızlı bir bakış yeterli — uygulama değiştirmeye veya tarayıcı açmaya gerek yok.",
-  "features.richSources.title": "Hepsi bir arada",
-  "features.richSources.description": "Son dakika haberleri, GitHub bildirimleri, hisse fiyatları, Reddit trendleri, RSS beslemeleri — hepsini tek bir menü çubuğundan takip edin.",
-  "features.extensible.title": "Genişletilebilir",
-  "features.extensible.description": "Basit YAML yapılandırması veya TypeScript eklentileriyle kendi kaynaklarınızı oluşturun ya da yapay zekânın sizin için oluşturmasını sağlayın.",
-  "features.rss.title": "RSS uyumlu",
-  "features.rss.description": "Herhangi bir RSS/Atom besleme URL'sini içe aktarın ve anında güncelleme almaya başlayın.",
+  "features.title": "Your menu bar, infinite possibilities",
+  "features.subtitle": "More than an information aggregator — a programmable awareness layer for your Mac.",
+  "features.stayInformed.title": "Stay Informed",
+  "features.stayInformed.description": "Hacker News, Reddit, Product Hunt — trending content streams right into your menu bar.",
+  "features.monitorMarkets.title": "Monitor Markets",
+  "features.monitorMarkets.description": "Real-time stock quotes, crypto prices, and financial flash news at a glance.",
+  "features.devToolkit.title": "Developer Toolkit",
+  "features.devToolkit.description": "GitHub notifications, trending repos, npm packages, and StackOverflow — your dev pulse.",
+  "features.trackEverything.title": "Track Everything",
+  "features.trackEverything.description": "Earthquake alerts, spaceflight news, TV schedules — follow anything you care about.",
+  "features.buildYourOwn.title": "Build Your Own",
+  "features.buildYourOwn.description": "A few lines of YAML or TypeScript, or let AI generate one for you.",
+  "features.buildYourOwn.link": "Read the docs",
+  "features.rssAndBeyond.title": "RSS & Beyond",
+  "features.rssAndBeyond.description": "Native RSS/Atom support. Pair with RSSHub to unlock thousands of data sources.",
+  "features.rssAndBeyond.link": "Explore RSSHub",
+  "features.browseSources": "Browse Sources",
+
+  // Open Platform
+  "openPlatform.title": "An open source ecosystem",
+  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, TypeScript for full control.",
+  "openPlatform.browseSources": "Browse Sources",
+
+  // CTA
+  "cta.title": "Ready to stay in the loop?",
+  "cta.description": "Download Glanceway and turn your menu bar into a personal information hub.",
 
   // Sources section
   "sources.title": "Kaynaklar",
   "sources.subtitle": "Topluluk tarafından oluşturulan kaynaklar. Tek tıkla yükleyin.",
+  "sources.pageTitle": "Sources",
+  "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "RSS besleme URL'lerini doğrudan içe aktarmayı da destekler. Binlerce rotayı keşfedin",
   "sources.submitSource": "Kaynak Gönder",
   "sources.emptyTitle": "Bu kategoride henüz kaynak yok",

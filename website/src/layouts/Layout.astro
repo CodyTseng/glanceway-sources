@@ -120,6 +120,10 @@ const basePath = getBasePath(currentPath, locale);
           Glanceway
         </a>
         <nav class="flex items-center gap-4 text-sm">
+          <a
+            href={getLocalePath(locale, "/sources")}
+            class="font-medium text-gray-600 no-underline hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+          >{t("nav.sources")}</a>
           <LanguageSwitcher locale={locale} currentPath={currentPath} />
           <button
             id="theme-toggle"
@@ -153,14 +157,9 @@ const basePath = getBasePath(currentPath, locale);
             class="flex items-center gap-6 text-sm text-gray-400 dark:text-gray-500"
           >
             <a
-              href={`${getLocalePath(locale, "/")}#sources`}
+              href={getLocalePath(locale, "/sources")}
               class="hover:text-gray-600 dark:hover:text-gray-300"
               >{t("nav.sources")}</a
-            >
-            <a
-              href="https://github.com/codytseng/glanceway-sources"
-              class="hover:text-gray-600 dark:hover:text-gray-300"
-              target="_blank">GitHub</a
             >
           </div>
         </div>

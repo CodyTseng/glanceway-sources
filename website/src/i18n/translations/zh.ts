@@ -6,25 +6,47 @@ const zh: Record<TranslationKey, string> = {
   "hero.description":
     "一款轻量级 macOS 菜单栏应用，让你随时掌握重要动态——开发者资讯、社交动态、提醒通知等",
   "hero.tagline": "不打扰，不过载",
-  "hero.download": "下载 macOS 版",
+  "hero.download": "前往 Mac App Store",
   "hero.comingSoon": "即将发布",
   "hero.browseSources": "浏览信息源",
 
+  // App Preview
+  "appPreview.title": "看看实际效果",
+  "appPreview.subtitle": "你关心的一切，菜单栏一瞥即达。",
+
   // Features section
-  "features.title": "为什么选择 Glanceway？",
-  "features.subtitle": "保持对世界的感知，而非被信息淹没。",
-  "features.lightweight.title": "轻量级",
-  "features.lightweight.description": "常驻 macOS 菜单栏，瞥一眼即可掌握动态——无需切换应用或打开浏览器。",
-  "features.richSources.title": "一站式感知",
-  "features.richSources.description": "突发新闻、GitHub 通知、股票行情、Reddit 热帖、RSS 订阅——在一个菜单栏里掌握一切。",
-  "features.extensible.title": "可扩展",
-  "features.extensible.description": "通过简单的 YAML 配置或 TypeScript 插件编写自定义信息源，也可以让 AI 帮你生成。",
-  "features.rss.title": "兼容 RSS",
-  "features.rss.description": "导入任意 RSS/Atom 订阅链接，即刻接收更新。",
+  "features.title": "你的菜单栏，无限可能",
+  "features.subtitle": "不只是信息聚合器——为你的 Mac 打造的可编程感知层。",
+  "features.stayInformed.title": "保持知情",
+  "features.stayInformed.description": "Hacker News、Reddit、Product Hunt——热门内容自动推送到菜单栏。",
+  "features.monitorMarkets.title": "监控市场",
+  "features.monitorMarkets.description": "实时股票报价、加密货币行情、财经快讯，一瞥即知。",
+  "features.devToolkit.title": "开发者工具箱",
+  "features.devToolkit.description": "GitHub 通知、趋势仓库、npm 热门包、StackOverflow——你的开发脉搏。",
+  "features.trackEverything.title": "追踪万物",
+  "features.trackEverything.description": "地震预警、太空新闻、TV 节目表——关注任何你在意的事。",
+  "features.buildYourOwn.title": "自己动手",
+  "features.buildYourOwn.description": "几行 YAML 或 TypeScript，也可以让 AI 帮你生成。",
+  "features.buildYourOwn.link": "阅读文档",
+  "features.rssAndBeyond.title": "RSS 及更多",
+  "features.rssAndBeyond.description": "原生 RSS/Atom 支持，搭配 RSSHub 解锁数千种数据源。",
+  "features.rssAndBeyond.link": "探索 RSSHub",
+  "features.browseSources": "浏览信息源",
+
+  // Open Platform
+  "openPlatform.title": "开放的信息源生态",
+  "openPlatform.description": "任何人都可以创建和分享信息源。用 YAML 快速上手，用 TypeScript 完全掌控。",
+  "openPlatform.browseSources": "浏览信息源",
+
+  // CTA
+  "cta.title": "准备好保持同步了吗？",
+  "cta.description": "下载 Glanceway，把你的菜单栏变成个人信息中枢。",
 
   // Sources section
   "sources.title": "信息源",
   "sources.subtitle": "社区构建的信息源，一键安装。",
+  "sources.pageTitle": "信息源",
+  "sources.pageSubtitle": "浏览并安装社区构建的 Glanceway 信息源。",
   "sources.rssNote": "也支持直接导入 RSS 订阅链接。在以下平台探索数千种路由",
   "sources.submitSource": "提交信息源",
   "sources.emptyTitle": "该分类暂无信息源",

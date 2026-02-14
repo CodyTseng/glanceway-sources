@@ -5,25 +5,47 @@ const de: Record<TranslationKey, string> = {
   "hero.title": "Alles auf einen Blick",
   "hero.description": "Eine schlanke macOS-Menüleisten-App, die dich über das Wichtigste auf dem Laufenden hält — Entwickler-News, soziale Feeds, Benachrichtigungen und mehr.",
   "hero.tagline": "Keine Ablenkungen, keine Reizüberflutung.",
-  "hero.download": "Für macOS herunterladen",
+  "hero.download": "Get on Mac App Store",
   "hero.comingSoon": "Demnächst verfügbar",
   "hero.browseSources": "Quellen durchsuchen",
 
+  // App Preview
+  "appPreview.title": "See it in action",
+  "appPreview.subtitle": "Everything you care about, one glance away from your menu bar.",
+
   // Features section
-  "features.title": "Warum Glanceway?",
-  "features.subtitle": "Bleib informiert — ohne den Lärm.",
-  "features.lightweight.title": "Leichtgewichtig",
-  "features.lightweight.description": "Lebt in deiner macOS-Menüleiste. Ein kurzer Blick genügt — kein App-Wechsel, kein Browser nötig.",
-  "features.richSources.title": "Alles auf einen Blick",
-  "features.richSources.description": "Eilmeldungen, GitHub-Benachrichtigungen, Aktienkurse, Reddit-Trends, RSS-Feeds — alles in einer Menüleiste.",
-  "features.extensible.title": "Erweiterbar",
-  "features.extensible.description": "Erstelle eigene Quellen mit einfacher YAML-Konfiguration oder TypeScript-Plugins — oder lass sie von KI generieren.",
-  "features.rss.title": "RSS-kompatibel",
-  "features.rss.description": "Importiere beliebige RSS/Atom-Feed-URLs und erhalte sofort Updates.",
+  "features.title": "Your menu bar, infinite possibilities",
+  "features.subtitle": "More than an information aggregator — a programmable awareness layer for your Mac.",
+  "features.stayInformed.title": "Stay Informed",
+  "features.stayInformed.description": "Hacker News, Reddit, Product Hunt — trending content streams right into your menu bar.",
+  "features.monitorMarkets.title": "Monitor Markets",
+  "features.monitorMarkets.description": "Real-time stock quotes, crypto prices, and financial flash news at a glance.",
+  "features.devToolkit.title": "Developer Toolkit",
+  "features.devToolkit.description": "GitHub notifications, trending repos, npm packages, and StackOverflow — your dev pulse.",
+  "features.trackEverything.title": "Track Everything",
+  "features.trackEverything.description": "Earthquake alerts, spaceflight news, TV schedules — follow anything you care about.",
+  "features.buildYourOwn.title": "Build Your Own",
+  "features.buildYourOwn.description": "A few lines of YAML or TypeScript, or let AI generate one for you.",
+  "features.buildYourOwn.link": "Read the docs",
+  "features.rssAndBeyond.title": "RSS & Beyond",
+  "features.rssAndBeyond.description": "Native RSS/Atom support. Pair with RSSHub to unlock thousands of data sources.",
+  "features.rssAndBeyond.link": "Explore RSSHub",
+  "features.browseSources": "Browse Sources",
+
+  // Open Platform
+  "openPlatform.title": "An open source ecosystem",
+  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, TypeScript for full control.",
+  "openPlatform.browseSources": "Browse Sources",
+
+  // CTA
+  "cta.title": "Ready to stay in the loop?",
+  "cta.description": "Download Glanceway and turn your menu bar into a personal information hub.",
 
   // Sources section
   "sources.title": "Quellen",
   "sources.subtitle": "Von der Community erstellte Quellen. Ein Klick zur Installation.",
+  "sources.pageTitle": "Sources",
+  "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "Unterstützt auch den direkten Import von RSS-Feed-URLs. Entdecke tausende Routen auf",
   "sources.submitSource": "Quelle einreichen",
   "sources.emptyTitle": "Noch keine Quellen in dieser Kategorie",

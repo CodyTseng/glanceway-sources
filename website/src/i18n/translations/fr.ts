@@ -3,56 +3,78 @@ import type { TranslationKey } from "./en";
 const fr: Record<TranslationKey, string> = {
   // Hero
   "hero.title": "Tout en un coup d'\u0153il",
-  "hero.description": "Une application l\u00e9g\u00e8re dans la barre de menus de macOS qui vous tient inform\u00e9 de ce qui compte : actualit\u00e9s dev, flux sociaux, alertes et bien plus.",
+  "hero.description": "Une application légère dans la barre de menus de macOS qui vous tient informé de ce qui compte : actualités dev, flux sociaux, alertes et bien plus.",
   "hero.tagline": "Sans distractions, sans surcharge.",
-  "hero.download": "T\u00e9l\u00e9charger pour macOS",
-  "hero.comingSoon": "Bient\u00f4t disponible",
+  "hero.download": "Get on Mac App Store",
+  "hero.comingSoon": "Bientôt disponible",
   "hero.browseSources": "Parcourir les sources",
 
+  // App Preview
+  "appPreview.title": "See it in action",
+  "appPreview.subtitle": "Everything you care about, one glance away from your menu bar.",
+
   // Features section
-  "features.title": "Pourquoi Glanceway ?",
-  "features.subtitle": "Restez informé de ce qui se passe — sans le bruit.",
-  "features.lightweight.title": "Léger",
-  "features.lightweight.description": "Vit dans votre barre de menus macOS. Un coup d'œil suffit — pas besoin de changer d'app ni d'ouvrir un navigateur.",
-  "features.richSources.title": "Tout-en-un",
-  "features.richSources.description": "Actualités, notifications GitHub, cours boursiers, tendances Reddit, flux RSS — tout depuis une seule barre de menus.",
-  "features.extensible.title": "Extensible",
-  "features.extensible.description": "Créez vos propres sources avec une simple config YAML ou des plugins TypeScript, ou laissez l'IA les générer pour vous.",
-  "features.rss.title": "Compatible RSS",
-  "features.rss.description": "Importez n'importe quelle URL de flux RSS/Atom et recevez des mises à jour instantanément.",
+  "features.title": "Your menu bar, infinite possibilities",
+  "features.subtitle": "More than an information aggregator — a programmable awareness layer for your Mac.",
+  "features.stayInformed.title": "Stay Informed",
+  "features.stayInformed.description": "Hacker News, Reddit, Product Hunt — trending content streams right into your menu bar.",
+  "features.monitorMarkets.title": "Monitor Markets",
+  "features.monitorMarkets.description": "Real-time stock quotes, crypto prices, and financial flash news at a glance.",
+  "features.devToolkit.title": "Developer Toolkit",
+  "features.devToolkit.description": "GitHub notifications, trending repos, npm packages, and StackOverflow — your dev pulse.",
+  "features.trackEverything.title": "Track Everything",
+  "features.trackEverything.description": "Earthquake alerts, spaceflight news, TV schedules — follow anything you care about.",
+  "features.buildYourOwn.title": "Build Your Own",
+  "features.buildYourOwn.description": "A few lines of YAML or TypeScript, or let AI generate one for you.",
+  "features.buildYourOwn.link": "Read the docs",
+  "features.rssAndBeyond.title": "RSS & Beyond",
+  "features.rssAndBeyond.description": "Native RSS/Atom support. Pair with RSSHub to unlock thousands of data sources.",
+  "features.rssAndBeyond.link": "Explore RSSHub",
+  "features.browseSources": "Browse Sources",
+
+  // Open Platform
+  "openPlatform.title": "An open source ecosystem",
+  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, TypeScript for full control.",
+  "openPlatform.browseSources": "Browse Sources",
+
+  // CTA
+  "cta.title": "Ready to stay in the loop?",
+  "cta.description": "Download Glanceway and turn your menu bar into a personal information hub.",
 
   // Sources section
   "sources.title": "Sources",
-  "sources.subtitle": "Des sources cr\u00e9\u00e9es par la communaut\u00e9. Un clic pour installer.",
-  "sources.rssNote": "Prend \u00e9galement en charge l'import direct d'URLs de flux RSS. Explorez des milliers de routes sur",
+  "sources.subtitle": "Des sources créées par la communauté. Un clic pour installer.",
+  "sources.pageTitle": "Sources",
+  "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
+  "sources.rssNote": "Prend également en charge l'import direct d'URLs de flux RSS. Explorez des milliers de routes sur",
   "sources.submitSource": "Proposer une source",
-  "sources.emptyTitle": "Aucune source dans cette cat\u00e9gorie pour le moment",
-  "sources.emptySubtitle": "Soyez le premier \u00e0 en cr\u00e9er une !",
+  "sources.emptyTitle": "Aucune source dans cette catégorie pour le moment",
+  "sources.emptySubtitle": "Soyez le premier à en créer une !",
 
   // Categories
   "category.All": "Toutes",
-  "category.Developer": "D\u00e9veloppement",
-  "category.News": "Actualit\u00e9s",
+  "category.Developer": "Développement",
+  "category.News": "Actualités",
   "category.Social": "Social",
   "category.Finance": "Finance",
   "category.Entertainment": "Divertissement",
-  "category.Productivity": "Productivit\u00e9",
+  "category.Productivity": "Productivité",
   "category.Other": "Autres",
 
   // Source detail
   "detail.allSources": "Toutes les sources",
   "detail.install": "Installer dans Glanceway",
-  "detail.download": "T\u00e9l\u00e9charger",
+  "detail.download": "Télécharger",
   "detail.configuration": "Configuration",
   "detail.sourceCode": "Code source",
   "detail.by": "par",
 
   // Config table headers
   "config.name": "Nom",
-  "config.key": "Cl\u00e9",
+  "config.key": "Clé",
   "config.type": "Type",
   "config.required": "Requis",
-  "config.default": "D\u00e9faut",
+  "config.default": "Défaut",
   "config.description": "Description",
   "config.yes": "Oui",
   "config.no": "Non",
@@ -61,7 +83,7 @@ const fr: Record<TranslationKey, string> = {
   "nav.sources": "Sources",
 
   // Footer
-  "footer.copyright": "\u00a9 {year} Glanceway",
+  "footer.copyright": "© {year} Glanceway",
 
   // Language switcher
   "language.label": "Langue",

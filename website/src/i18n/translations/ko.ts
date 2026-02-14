@@ -5,25 +5,47 @@ const ko: Record<TranslationKey, string> = {
   "hero.title": "한눈에 모든 것을",
   "hero.description": "개발자 뉴스, 소셜 피드, 알림 등 중요한 정보를 놓치지 않게 해주는 가벼운 macOS 메뉴 바 앱입니다.",
   "hero.tagline": "방해 없이, 부담 없이.",
-  "hero.download": "macOS용 다운로드",
+  "hero.download": "Get on Mac App Store",
   "hero.comingSoon": "곧 출시",
   "hero.browseSources": "소스 둘러보기",
 
+  // App Preview
+  "appPreview.title": "See it in action",
+  "appPreview.subtitle": "Everything you care about, one glance away from your menu bar.",
+
   // Features section
-  "features.title": "왜 Glanceway인가요?",
-  "features.subtitle": "소음 없이 세상 돌아가는 일을 파악하세요.",
-  "features.lightweight.title": "가벼움",
-  "features.lightweight.description": "macOS 메뉴 바에 상주합니다. 한 번 흘끗 보는 것만으로 충분 — 앱 전환이나 브라우저가 필요 없습니다.",
-  "features.richSources.title": "올인원 인식",
-  "features.richSources.description": "속보, GitHub 알림, 주가, Reddit 트렌드, RSS 피드 — 하나의 메뉴 바에서 모든 것을 파악하세요.",
-  "features.extensible.title": "확장 가능",
-  "features.extensible.description": "간단한 YAML 설정이나 TypeScript 플러그인으로 나만의 소스를 만들거나, AI가 대신 생성해 줍니다.",
-  "features.rss.title": "RSS 호환",
-  "features.rss.description": "RSS/Atom 피드 URL을 가져오기만 하면 즉시 업데이트를 받을 수 있습니다.",
+  "features.title": "Your menu bar, infinite possibilities",
+  "features.subtitle": "More than an information aggregator — a programmable awareness layer for your Mac.",
+  "features.stayInformed.title": "Stay Informed",
+  "features.stayInformed.description": "Hacker News, Reddit, Product Hunt — trending content streams right into your menu bar.",
+  "features.monitorMarkets.title": "Monitor Markets",
+  "features.monitorMarkets.description": "Real-time stock quotes, crypto prices, and financial flash news at a glance.",
+  "features.devToolkit.title": "Developer Toolkit",
+  "features.devToolkit.description": "GitHub notifications, trending repos, npm packages, and StackOverflow — your dev pulse.",
+  "features.trackEverything.title": "Track Everything",
+  "features.trackEverything.description": "Earthquake alerts, spaceflight news, TV schedules — follow anything you care about.",
+  "features.buildYourOwn.title": "Build Your Own",
+  "features.buildYourOwn.description": "A few lines of YAML or TypeScript, or let AI generate one for you.",
+  "features.buildYourOwn.link": "Read the docs",
+  "features.rssAndBeyond.title": "RSS & Beyond",
+  "features.rssAndBeyond.description": "Native RSS/Atom support. Pair with RSSHub to unlock thousands of data sources.",
+  "features.rssAndBeyond.link": "Explore RSSHub",
+  "features.browseSources": "Browse Sources",
+
+  // Open Platform
+  "openPlatform.title": "An open source ecosystem",
+  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, TypeScript for full control.",
+  "openPlatform.browseSources": "Browse Sources",
+
+  // CTA
+  "cta.title": "Ready to stay in the loop?",
+  "cta.description": "Download Glanceway and turn your menu bar into a personal information hub.",
 
   // Sources section
   "sources.title": "소스",
   "sources.subtitle": "커뮤니티가 만든 소스를 클릭 한 번으로 설치하세요.",
+  "sources.pageTitle": "Sources",
+  "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "RSS 피드 URL을 직접 가져올 수도 있습니다. 다양한 라우트를 확인해 보세요:",
   "sources.submitSource": "소스 제출하기",
   "sources.emptyTitle": "이 카테고리에는 아직 소스가 없습니다",

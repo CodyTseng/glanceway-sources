@@ -6,25 +6,47 @@ const zhTw: Record<TranslationKey, string> = {
   "hero.description":
     "一款輕量級 macOS 選單列應用程式，讓你隨時掌握重要動態——開發者資訊、社群動態、提醒通知等",
   "hero.tagline": "不干擾，不過載",
-  "hero.download": "下載 macOS 版",
+  "hero.download": "Get on Mac App Store",
   "hero.comingSoon": "即將發布",
   "hero.browseSources": "瀏覽資料來源",
 
+  // App Preview
+  "appPreview.title": "See it in action",
+  "appPreview.subtitle": "Everything you care about, one glance away from your menu bar.",
+
   // Features section
-  "features.title": "為什麼選擇 Glanceway？",
-  "features.subtitle": "保持對世界的感知，而非被資訊淹沒。",
-  "features.lightweight.title": "輕量級",
-  "features.lightweight.description": "常駐 macOS 選單列，瞥一眼即可掌握動態——無需切換應用程式或開啟瀏覽器。",
-  "features.richSources.title": "一站式感知",
-  "features.richSources.description": "突發新聞、GitHub 通知、股票行情、Reddit 熱帖、RSS 訂閱——在一個選單列裡掌握一切。",
-  "features.extensible.title": "可擴充",
-  "features.extensible.description": "透過簡單的 YAML 設定或 TypeScript 外掛撰寫自訂資料來源，也可以讓 AI 幫你產生。",
-  "features.rss.title": "相容 RSS",
-  "features.rss.description": "匯入任意 RSS/Atom 訂閱連結，即刻接收更新。",
+  "features.title": "Your menu bar, infinite possibilities",
+  "features.subtitle": "More than an information aggregator — a programmable awareness layer for your Mac.",
+  "features.stayInformed.title": "Stay Informed",
+  "features.stayInformed.description": "Hacker News, Reddit, Product Hunt — trending content streams right into your menu bar.",
+  "features.monitorMarkets.title": "Monitor Markets",
+  "features.monitorMarkets.description": "Real-time stock quotes, crypto prices, and financial flash news at a glance.",
+  "features.devToolkit.title": "Developer Toolkit",
+  "features.devToolkit.description": "GitHub notifications, trending repos, npm packages, and StackOverflow — your dev pulse.",
+  "features.trackEverything.title": "Track Everything",
+  "features.trackEverything.description": "Earthquake alerts, spaceflight news, TV schedules — follow anything you care about.",
+  "features.buildYourOwn.title": "Build Your Own",
+  "features.buildYourOwn.description": "A few lines of YAML or TypeScript, or let AI generate one for you.",
+  "features.buildYourOwn.link": "Read the docs",
+  "features.rssAndBeyond.title": "RSS & Beyond",
+  "features.rssAndBeyond.description": "Native RSS/Atom support. Pair with RSSHub to unlock thousands of data sources.",
+  "features.rssAndBeyond.link": "Explore RSSHub",
+  "features.browseSources": "Browse Sources",
+
+  // Open Platform
+  "openPlatform.title": "An open source ecosystem",
+  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, TypeScript for full control.",
+  "openPlatform.browseSources": "Browse Sources",
+
+  // CTA
+  "cta.title": "Ready to stay in the loop?",
+  "cta.description": "Download Glanceway and turn your menu bar into a personal information hub.",
 
   // Sources section
   "sources.title": "資料來源",
   "sources.subtitle": "社群建置的資料來源，一鍵安裝。",
+  "sources.pageTitle": "Sources",
+  "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "也支援直接匯入 RSS 訂閱連結。在以下平台探索數千種路由",
   "sources.submitSource": "提交資料來源",
   "sources.emptyTitle": "此分類尚無資料來源",
