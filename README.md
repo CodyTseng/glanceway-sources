@@ -73,7 +73,6 @@ See the [development documentation](./docs/README.md) to learn how to create sou
 
 - [YAML Source Development](./docs/yaml-source.md)
 - [JS Source Development](./docs/js-source.md)
-- [API Reference](./docs/api-reference.md)
 
 ## License
 
