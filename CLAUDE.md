@@ -14,23 +14,6 @@ npm run generate-sources-json                        # Regenerate sources.json m
 npm run generate-readme                              # Regenerate README.md
 ```
 
-Scaffold a new TypeScript source (non-interactive):
-
-```bash
-npm run create-source -- \
-  --name my-source \
-  --author username \
-  --display-name "My Source" \
-  --description "A description" \
-  --category Developer \
-  --author-url "https://github.com/username" \
-  --tags "tag1,tag2"
-```
-
-Required args: `--name`, `--author`, `--display-name`, `--description`, `--category`.
-Optional args: `--author-url`, `--tags` (comma-separated).
-If any required arg is missing, the script falls back to interactive prompts.
-
 There is no test framework. Build the source to verify it compiles. There is no linter or formatter configured.
 
 ## Choosing Between YAML and TypeScript Sources
@@ -112,18 +95,15 @@ YAML sources are copied as-is (no compilation). Check `dist/author/source-name/`
 
 ## Creating a TypeScript Source
 
-### Step 1: Scaffold
+### Step 1: Create Source Directory
 
-```bash
-npm run create-source -- \
-  --name my-source \
-  --author myname \
-  --display-name "My Source" \
-  --description "Fetches items from Example API" \
-  --category Developer
+Create `sources/<author>/<source-name>/` with two files: `manifest.yaml` and `index.ts`.
+
 ```
-
-This creates `sources/myname/my-source/` with `manifest.yaml` and `index.ts`.
+sources/myname/my-source/
+├── manifest.yaml
+└── index.ts
+```
 
 ### Step 2: Implement index.ts
 

@@ -2,214 +2,266 @@
 
 JavaScript sources provide full control over data fetching and processing.
 
-## Quick Start
+## Getting Started
 
-Create a new source using the CLI:
+Use [`create-glanceway-source`](../create-glanceway-source/README.md) to scaffold a standalone project with build tooling, test framework, and full API documentation:
 
 ```bash
-npm run create-source -- \
-  --name my-source \
-  --author myname \
-  --display-name "My Source" \
-  --description "Fetches items from Example API" \
-  --category Developer
+npm create glanceway-source
 ```
 
-Or run `npm run create-source` for the interactive prompts.
+The generated project includes everything you need: source template, type definitions, build scripts, test runner, and detailed development guide. See the project's README for full usage details.
 
-## Source Structure
+## JavaScript API Reference
 
-```
-sources/your-username/my-source/
-├── manifest.yaml    # Source metadata
-└── index.ts         # Source logic (compiled to JS at build time)
-```
+Complete reference for the Glanceway Source API.
 
-## manifest.yaml
+### API Object
 
-```yaml
-version: 1.0.0
-name: My Source
-description: A brief description of what this source provides
-author: your-username
-author_url: https://github.com/your-username
-category: Developer
-tags:
-  - example
-  - api
-
-# Optional: User-configurable fields
-config:
-  - key: API_TOKEN
-    name: API Token
-    type: secret           # string, number, boolean, secret, select, or list
-    description: Your API token
-    required: true
-
-  - key: USERNAME
-    name: Username
-    type: string
-    description: Filter by username (optional)
-    required: false
-
-  - key: SORT
-    name: Sort Order
-    type: select           # use select with options for fixed value sets
-    description: Sort order for results
-    required: false
-    default: hot
-    options:
-      - hot
-      - new
-      - top
-```
-
-## Source Lifecycle
-
-Sources have two distinct phases:
-
-1. **Start phase**: When the source is first loaded, the default export function runs. The app does **NOT** call `refresh()` at this point. Sources should `await` their initial data fetch before returning.
-2. **Refresh phase**: On each scheduled refresh interval, the app calls `refresh()`. This is the only time `refresh()` is invoked.
-3. **Stop**: `stop()` is called when the source is disabled or removed. Use for cleanup.
-
-### Standard Pattern
-
-Extract fetch logic into a named async function, `await` it in the outer closure, and assign it as the `refresh` method:
+The API object is passed to your source's default export function:
 
 ```javascript
 export default async (api) => {
-  const token = api.config.get("API_TOKEN");
-
   async function fetchData() {
-    const response = await api.fetch(
-      "https://api.example.com/items",
-      { headers: { Authorization: `Bearer ${token}` } },
-    );
-
-    if (!response.ok || !response.json) {
-      throw new Error(`Failed to fetch items (HTTP ${response.status})`);
-    }
-
-    api.emit(
-      response.json.items.map((item) => ({
-        id: item.id,
-        title: item.title,
-        subtitle: item.description,
-        url: item.url,
-        timestamp: item.created_at,
-      })),
-    );
+    /* fetch, transform, emit */
   }
 
-  // Start phase: initial fetch
   await fetchData();
 
   return {
     refresh: fetchData,
+    stop() {
+      /* optional cleanup */
+    },
   };
 };
 ```
 
-## Information Item Format
+---
+
+### api.emit(items)
+
+Sends information items to Glanceway for display.
+
+#### InfoItem
 
 ```typescript
 interface InfoItem {
-  id: string;                        // Required: unique identifier
-  title: string;                     // Required: main display text
-  subtitle?: string;                 // Optional: secondary text
-  url?: string;                      // Optional: link when clicked
-  timestamp?: Date | string | number // Optional: ISO string, Unix, or Date
+  id: string; // Required: unique identifier
+  title: string; // Required: main display text
+  subtitle?: string; // Optional: secondary text
+  url?: string; // Optional: clickable link
+  timestamp?: Date | string | number; // Optional: item time
 }
 ```
 
-### Timestamps
+#### Example
 
-All these formats are valid:
+```javascript
+api.emit([
+  {
+    id: "123",
+    title: "New notification",
+    subtitle: "From repository",
+    url: "https://github.com/...",
+    timestamp: "2024-01-15T10:30:00Z",
+  },
+]);
+```
+
+#### Timestamp Formats
+
+All of these are valid:
 
 ```javascript
 // ISO 8601 string
 timestamp: "2024-01-15T10:30:00Z";
 
-// Unix seconds
+// Unix timestamp (seconds)
 timestamp: 1705315800;
 
-// Unix milliseconds
+// Unix timestamp (milliseconds)
 timestamp: 1705315800000;
 
-// Date object
+// JavaScript Date object
 timestamp: new Date();
 ```
 
-## Using Configuration
+---
 
-Read config **in the outer closure** (before `return`), not inside the fetch function. When config changes, Glanceway reloads the entire script, so the outer closure always has fresh values.
+### api.fetch(url, options?)
+
+Makes HTTP requests.
+
+#### FetchOptions
+
+```typescript
+interface FetchOptions {
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"; // Default: 'GET'
+  headers?: Record<string, string>;
+  body?: string;
+  timeout?: number; // Milliseconds, default: 30000
+}
+```
+
+#### FetchResponse
+
+```typescript
+interface FetchResponse {
+  ok: boolean; // true if status 200-299
+  status: number; // HTTP status code
+  headers: Record<string, string>; // Response headers
+  text: string; // Raw response body
+  json?: any; // Parsed JSON (if valid)
+  error?: string; // Error message if request failed
+}
+```
+
+#### Examples
+
+##### GET Request
+
+```javascript
+const response = await api.fetch("https://api.example.com/data");
+
+if (response.ok && response.json) {
+  const articles = response.json.items;
+}
+```
+
+##### POST Request
+
+```javascript
+const response = await api.fetch("https://api.example.com/data", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer token123",
+  },
+  body: JSON.stringify({
+    query: "search term",
+  }),
+});
+```
+
+##### With Timeout
+
+```javascript
+const response = await api.fetch("https://slow-api.example.com/data", {
+  timeout: 60000, // 60 seconds
+});
+```
+
+---
+
+### api.log(level, message)
+
+Logs messages for debugging. Levels: `"info"`, `"error"`, `"warn"`, `"debug"`.
+
+#### Examples
+
+```javascript
+api.log("info", "Starting refresh");
+api.log("debug", `Fetched ${items.length} items`);
+api.log("warn", "Rate limit approaching");
+api.log("error", "Failed to connect");
+```
+
+---
+
+### api.storage
+
+Persistent key-value storage that survives between refreshes and app restarts.
+
+```typescript
+interface StorageAPI {
+  get(key: string): string | undefined;
+  set(key: string, value: string): void;
+}
+```
+
+#### Use Cases
+
+- Tracking last seen item ID
+- Caching data between refreshes (e.g., company names)
+- Storing pagination cursors
+- Remembering state for change detection
+
+---
+
+### api.config
+
+Access user-configured values from manifest.yaml.
+
+#### manifest.yaml Configuration
+
+```yaml
+config:
+  - key: API_TOKEN
+    name: API Token
+    type: secret
+    description: Your API token
+    required: true
+
+  - key: TAGS
+    name: Tags
+    type: list
+    description: Tags to filter by
+    required: false
+```
+
+#### Examples
 
 ```javascript
 export default async (api) => {
-  const token = api.config.get("API_TOKEN");
-  const tags = api.config.get("TAGS");
+  const token = api.config.get("API_TOKEN"); // string
+  const tags = api.config.get("TAGS"); // string[]
 
-  async function fetchData() {
-    // use token and tags directly
-  }
+  // Get all config values
+  const allConfig = api.config.getAll();
 
-  await fetchData();
-
-  return {
-    refresh: fetchData,
-  };
+  // ...
 };
 ```
 
-## Persistent Storage
+---
 
-Store data between refreshes:
+### api.appVersion
+
+Current Glanceway app version string (e.g., `"1.2.0"`).
 
 ```javascript
-export default async (api) => {
-  async function fetchData() {
-    const lastId = api.storage.get("lastId");
-
-    const response = await api.fetch("https://api.example.com/items");
-
-    if (!response.ok || !response.json) {
-      throw new Error(`Failed to fetch items (HTTP ${response.status})`);
-    }
-
-    const items = response.json;
-    const newItems = lastId
-      ? items.filter((item) => item.id > lastId)
-      : items;
-
-    if (newItems.length > 0) {
-      api.storage.set("lastId", newItems[0].id);
-      api.emit(
-        newItems.map((item) => ({
-          id: item.id,
-          title: item.title,
-        })),
-      );
-    }
-  }
-
-  await fetchData();
-
-  return {
-    refresh: fetchData,
-  };
-};
+api.log("info", `Running on Glanceway ${api.appVersion}`);
 ```
 
-## WebSocket Connections
+---
 
-For real-time data sources, use WebSocket in the start phase and skip `refresh`:
+### api.websocket
+
+Create WebSocket connections for real-time data.
+
+```typescript
+interface WebSocketCallbacks {
+  onConnect?: (ws: WebSocketConnection) => void;
+  onMessage?: (data: string) => void;
+  onError?: (error: string) => void;
+  onClose?: (code: number) => void;
+}
+
+interface WebSocketConnection {
+  send(message: string): Promise<void>;
+  close(): void;
+}
+```
+
+#### Example
 
 ```javascript
 export default async (api) => {
   const ws = await api.websocket.connect("wss://stream.example.com", {
     onConnect(connection) {
-      api.log("info", "Connected to stream");
-      connection.send(JSON.stringify({ subscribe: "updates" }));
+      api.log("info", "Connected");
+      connection.send(JSON.stringify({ type: "subscribe" }));
     },
 
     onMessage(data) {
@@ -218,17 +270,16 @@ export default async (api) => {
         {
           id: event.id,
           title: event.message,
-          timestamp: event.time,
         },
       ]);
     },
 
     onError(error) {
-      api.log("error", `WebSocket error: ${error}`);
+      api.log("error", `Error: ${error}`);
     },
 
     onClose(code) {
-      api.log("info", `Disconnected: ${code}`);
+      api.log("info", `Closed: ${code}`);
     },
   });
 
@@ -240,51 +291,65 @@ export default async (api) => {
 };
 ```
 
-## Error Handling
+---
 
-For the main/only request, throw on failure. For parallel sub-requests, skip failures silently.
+### Source Export
 
-```javascript
-// Single request: throw on failure
-const res = await api.fetch(url);
-if (!res.ok || !res.json) {
-  throw new Error(`Failed to fetch articles (HTTP ${res.status})`);
+Your source module must export an async function that receives the API and returns an object with optional `refresh` and `stop` methods.
+
+```typescript
+interface SourceMethods {
+  refresh?: () => Promise<void> | void;
+  stop?: () => Promise<void> | void;
 }
-api.emit(toItems(res.json));
 ```
 
-## Parallel Requests
+#### Start Phase (Default Export)
 
-Always use `Promise.allSettled` (never `Promise.all`) for parallel requests:
+The default export function runs when the source is loaded. It should `await` the initial data fetch before returning. The app does NOT call `refresh()` on initial load.
 
 ```javascript
-await Promise.allSettled(
-  ids.map(async (id) => {
-    const res = await api.fetch(
-      `https://api.example.com/items/${id}`,
-    );
-    if (res.ok && res.json) {
-      items.push(res.json);
-      api.emit(/* ... */);
-    }
-  }),
-);
+export default async (api) => {
+  async function fetchData() {
+    // Fetch and emit data
+  }
+
+  await fetchData();
+
+  return {
+    refresh: fetchData,
+  };
+};
 ```
 
-## Development Constraints
+#### refresh()
 
-- **NO external imports.** All functionality is provided through the `api` parameter.
-- **Maximize items per fetch.** The app does not paginate, so fetch as many items as the API allows (hard limit: 500).
+Called periodically based on user settings. NOT called on initial load.
 
-## Tips
+#### stop()
 
-1. **Use `subtitle`** - Always map descriptive text to subtitle for maximum information at a glance
-2. **Handle errors** - Throw on main request failure, skip on parallel sub-request failure
-3. **Respect rate limits** - Be mindful of API rate limits
-4. **Test locally** - Build with `npm run build-sources -- --source author/name` to verify
-5. **Clean up** - Implement `stop()` for WebSocket sources
+Called when the source is stopped or removed. Use for cleanup (e.g., closing WebSocket connections).
 
-## Next Steps
+---
 
-- [API Reference](./api-reference.md) - Full API documentation
-- [Contributing](../CONTRIBUTING.md) - Submit your source
+### TypeScript Type Definitions
+
+For TypeScript development, import types from `../../types`:
+
+```typescript
+import type { GlancewayAPI, SourceMethods } from "../../types";
+```
+
+The complete type definitions are available in the `sources/types.ts` file. Key interfaces:
+
+- `GlancewayAPI<TConfig>` - Main API object (supports Config generic)
+- `SourceMethods` - Return type with `refresh` and `stop`
+- `InfoItem` - Item emitted for display
+- `FetchOptions` / `FetchResponse<T>` - HTTP request/response types
+- `WebSocketCallbacks` / `WebSocketConnection` - WebSocket types
+
+Create a new source project:
+
+```bash
+npm create glanceway-source
+```

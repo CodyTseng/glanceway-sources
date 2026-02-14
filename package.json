@@ -4,7 +4,6 @@
   "description": "Community sources for Glanceway",
   "type": "module",
   "scripts": {
-    "create-source": "npx tsx scripts/create-source.ts",
     "build-sources": "npx tsx scripts/build-sources.ts",
     "generate-sources-json": "npx tsx scripts/generate-sources-json.ts",
     "generate-readme": "npx tsx scripts/generate-readme.ts",
@@ -13,11 +12,9 @@
   },
   "devDependencies": {
     "@types/archiver": "^7.0.0",
-    "@types/prompts": "^2.4.9",
     "archiver": "^7.0.1",
     "esbuild": "^0.27.2",
     "husky": "^9.1.7",
-    "prompts": "^2.4.2",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "yaml": "^2.3.4"
