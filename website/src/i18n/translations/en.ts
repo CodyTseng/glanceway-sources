@@ -46,6 +46,7 @@ const en = {
   "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "Also supports importing RSS feed URLs directly. Explore thousands of routes on",
   "sources.submitSource": "Submit a Source",
+  "sources.buildSource": "Build a Source",
   "sources.emptyTitle": "No sources in this category yet",
   "sources.emptySubtitle": "Be the first to build one!",
 

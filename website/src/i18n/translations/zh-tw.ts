@@ -49,6 +49,8 @@ const zhTw: Record<TranslationKey, string> = {
   "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "也支援直接匯入 RSS 訂閱連結。在以下平台探索數千種路由",
   "sources.submitSource": "提交資料來源",
+  "sources.buildSource": "Build a Source",
+  "sources.devDocs": "Dev Docs",
   "sources.emptyTitle": "此分類尚無資料來源",
   "sources.emptySubtitle": "成為第一個建置者吧！",
 

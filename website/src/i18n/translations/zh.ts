@@ -49,6 +49,7 @@ const zh: Record<TranslationKey, string> = {
   "sources.pageSubtitle": "浏览并安装社区构建的 Glanceway 信息源。",
   "sources.rssNote": "也支持直接导入 RSS 订阅链接。在以下平台探索数千种路由",
   "sources.submitSource": "提交信息源",
+  "sources.buildSource": "开发信息源",
   "sources.emptyTitle": "该分类暂无信息源",
   "sources.emptySubtitle": "成为第一个构建者吧！",
 

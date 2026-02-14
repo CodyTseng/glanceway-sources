@@ -48,6 +48,8 @@ const hi: Record<TranslationKey, string> = {
   "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "RSS फ़ीड URL सीधे इंपोर्ट करने का भी समर्थन करता है। हज़ारों रूट्स खोजें",
   "sources.submitSource": "सोर्स सबमिट करें",
+  "sources.buildSource": "Build a Source",
+  "sources.devDocs": "Dev Docs",
   "sources.emptyTitle": "इस श्रेणी में अभी कोई सोर्स नहीं है",
   "sources.emptySubtitle": "पहला सोर्स बनाने वाले बनें!",
 

@@ -48,6 +48,8 @@ const ko: Record<TranslationKey, string> = {
   "sources.pageSubtitle": "Browse and install community-built sources for Glanceway.",
   "sources.rssNote": "RSS 피드 URL을 직접 가져올 수도 있습니다. 다양한 라우트를 확인해 보세요:",
   "sources.submitSource": "소스 제출하기",
+  "sources.buildSource": "Build a Source",
+  "sources.devDocs": "Dev Docs",
   "sources.emptyTitle": "이 카테고리에는 아직 소스가 없습니다",
   "sources.emptySubtitle": "첫 번째로 만들어 보세요!",
 
