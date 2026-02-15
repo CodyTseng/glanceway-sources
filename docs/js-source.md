@@ -6,7 +6,7 @@ JavaScript sources provide full control over data fetching and processing.
 
 Create a directory with a `manifest.yaml` and an `index.js` file.
 
-For TypeScript development, use [`create-glanceway-source`](../create-glanceway-source/README.md) to scaffold a project with build tooling and type definitions:
+If you want to develop in TypeScript, or have an AI agent build the source for you, use [`create-glanceway-source`](../create-glanceway-source/README.md) to scaffold a project with build tooling, type definitions, and a CLAUDE.md for AI agents:
 
 ```bash
 npm create glanceway-source
