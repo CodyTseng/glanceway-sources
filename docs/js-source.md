@@ -4,13 +4,52 @@ JavaScript sources provide full control over data fetching and processing.
 
 ## Getting Started
 
-Use [`create-glanceway-source`](../create-glanceway-source/README.md) to scaffold a standalone project with build tooling, test framework, and full API documentation:
+Create a directory with a `manifest.yaml` and an `index.js` file.
+
+For TypeScript development, use [`create-glanceway-source`](../create-glanceway-source/README.md) to scaffold a project with build tooling and type definitions:
 
 ```bash
 npm create glanceway-source
 ```
 
-The generated project includes everything you need: source template, type definitions, build scripts, test runner, and detailed development guide. See the project's README for full usage details.
+## manifest.yaml
+
+Every JavaScript source requires a `manifest.yaml` file:
+
+```yaml
+version: 1.0.0 # Required: semantic version
+name: Display Name # Required: shown in Glanceway
+description: Brief summary # Required
+author: yourname # Required
+author_url: https://... # Optional
+category: Developer # Required: Developer | News | Social | Finance | Entertainment | Productivity | Other
+tags: # Optional
+  - tag1
+  - tag2
+min_app_version: 1.2.0 # Optional: minimum Glanceway app version required
+config: # Optional: user-configurable values
+  - key: API_TOKEN
+    name: API Token
+    type: secret # string, number, boolean, secret, select, or list
+    required: true
+    description: Your API token
+  - key: TAGS
+    name: Tags
+    type: list # list for string arrays (multiple values)
+    required: false
+    description: Tags to filter by
+  - key: SORT
+    name: Sort Order
+    type: select # select requires options list
+    required: false
+    default: hot
+    options:
+      - hot
+      - new
+      - top
+```
+
+Config values defined here can be read in your source via `api.config.get("KEY")`.
 
 ## JavaScript API Reference
 
@@ -18,10 +57,10 @@ Complete reference for the Glanceway Source API.
 
 ### API Object
 
-The API object is passed to your source's default export function:
+The API object is passed to your source's exported function:
 
 ```javascript
-export default async (api) => {
+module.exports = async (api) => {
   async function fetchData() {
     /* fetch, transform, emit */
   }
@@ -45,15 +84,13 @@ Sends information items to Glanceway for display.
 
 #### InfoItem
 
-```typescript
-interface InfoItem {
-  id: string; // Required: unique identifier
-  title: string; // Required: main display text
-  subtitle?: string; // Optional: secondary text
-  url?: string; // Optional: clickable link
-  timestamp?: Date | string | number; // Optional: item time
-}
-```
+| Field       | Type                   | Required | Description                                   |
+| ----------- | ---------------------- | -------- | --------------------------------------------- |
+| `id`        | string                 | Yes      | Unique identifier                             |
+| `title`     | string                 | Yes      | Main display text                             |
+| `subtitle`  | string                 | No       | Secondary text                                |
+| `url`       | string                 | No       | Clickable link                                |
+| `timestamp` | Date / string / number | No       | Item time (ISO 8601, Unix timestamp, or Date) |
 
 #### Example
 
@@ -95,27 +132,23 @@ Makes HTTP requests.
 
 #### FetchOptions
 
-```typescript
-interface FetchOptions {
-  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"; // Default: 'GET'
-  headers?: Record<string, string>;
-  body?: string;
-  timeout?: number; // Milliseconds, default: 30000
-}
-```
+| Field     | Type   | Default | Description                                          |
+| --------- | ------ | ------- | ---------------------------------------------------- |
+| `method`  | string | `"GET"` | `"GET"`, `"POST"`, `"PUT"`, `"DELETE"`, or `"PATCH"` |
+| `headers` | object | —       | Key-value pairs for request headers                  |
+| `body`    | string | —       | Request body                                         |
+| `timeout` | number | `30000` | Timeout in milliseconds                              |
 
 #### FetchResponse
 
-```typescript
-interface FetchResponse {
-  ok: boolean; // true if status 200-299
-  status: number; // HTTP status code
-  headers: Record<string, string>; // Response headers
-  text: string; // Raw response body
-  json?: any; // Parsed JSON (if valid)
-  error?: string; // Error message if request failed
-}
-```
+| Field     | Type    | Description                     |
+| --------- | ------- | ------------------------------- |
+| `ok`      | boolean | `true` if status 200–299        |
+| `status`  | number  | HTTP status code                |
+| `headers` | object  | Response headers                |
+| `text`    | string  | Raw response body               |
+| `json`    | any     | Parsed JSON (if valid)          |
+| `error`   | string  | Error message if request failed |
 
 #### Examples
 
@@ -173,12 +206,8 @@ api.log("error", "Failed to connect");
 
 Persistent key-value storage that survives between refreshes and app restarts.
 
-```typescript
-interface StorageAPI {
-  get(key: string): string | undefined;
-  set(key: string, value: string): void;
-}
-```
+- `api.storage.get(key)` — Returns the stored string value, or `undefined` if not set.
+- `api.storage.set(key, value)` — Stores a string value.
 
 #### Use Cases
 
@@ -191,29 +220,12 @@ interface StorageAPI {
 
 ### api.config
 
-Access user-configured values from manifest.yaml.
-
-#### manifest.yaml Configuration
-
-```yaml
-config:
-  - key: API_TOKEN
-    name: API Token
-    type: secret
-    description: Your API token
-    required: true
-
-  - key: TAGS
-    name: Tags
-    type: list
-    description: Tags to filter by
-    required: false
-```
+Access user-configured values defined in the `config` section of [manifest.yaml](#manifestyaml).
 
 #### Examples
 
 ```javascript
-export default async (api) => {
+module.exports = async (api) => {
   const token = api.config.get("API_TOKEN"); // string
   const tags = api.config.get("TAGS"); // string[]
 
@@ -240,24 +252,21 @@ api.log("info", `Running on Glanceway ${api.appVersion}`);
 
 Create WebSocket connections for real-time data.
 
-```typescript
-interface WebSocketCallbacks {
-  onConnect?: (ws: WebSocketConnection) => void;
-  onMessage?: (data: string) => void;
-  onError?: (error: string) => void;
-  onClose?: (code: number) => void;
-}
+`api.websocket.connect(url, callbacks)` accepts a URL and a callbacks object:
 
-interface WebSocketConnection {
-  send(message: string): Promise<void>;
-  close(): void;
-}
-```
+| Callback    | Arguments    | Description                                                         |
+| ----------- | ------------ | ------------------------------------------------------------------- |
+| `onConnect` | `connection` | Called when connected. Use `connection.send(msg)` to send messages. |
+| `onMessage` | `data`       | Called when a message is received (string).                         |
+| `onError`   | `error`      | Called on error (string).                                           |
+| `onClose`   | `code`       | Called when connection closes (number).                             |
+
+The returned connection object has `send(message)` and `close()` methods.
 
 #### Example
 
 ```javascript
-export default async (api) => {
+module.exports = async (api) => {
   const ws = await api.websocket.connect("wss://stream.example.com", {
     onConnect(connection) {
       api.log("info", "Connected");
@@ -295,21 +304,14 @@ export default async (api) => {
 
 ### Source Export
 
-Your source module must export an async function that receives the API and returns an object with optional `refresh` and `stop` methods.
+Your source module must export an async function via `module.exports` that receives the API and returns an object with optional `refresh` and `stop` methods.
 
-```typescript
-interface SourceMethods {
-  refresh?: () => Promise<void> | void;
-  stop?: () => Promise<void> | void;
-}
-```
+#### Start Phase
 
-#### Start Phase (Default Export)
-
-The default export function runs when the source is loaded. It should `await` the initial data fetch before returning. The app does NOT call `refresh()` on initial load.
+The exported function runs when the source is loaded. It should `await` the initial data fetch before returning. The app does NOT call `refresh()` on initial load.
 
 ```javascript
-export default async (api) => {
+module.exports = async (api) => {
   async function fetchData() {
     // Fetch and emit data
   }
@@ -329,27 +331,3 @@ Called periodically based on user settings. NOT called on initial load.
 #### stop()
 
 Called when the source is stopped or removed. Use for cleanup (e.g., closing WebSocket connections).
-
----
-
-### TypeScript Type Definitions
-
-For TypeScript development, import types from `../../types`:
-
-```typescript
-import type { GlancewayAPI, SourceMethods } from "../../types";
-```
-
-The complete type definitions are available in the `sources/types.ts` file. Key interfaces:
-
-- `GlancewayAPI<TConfig>` - Main API object (supports Config generic)
-- `SourceMethods` - Return type with `refresh` and `stop`
-- `InfoItem` - Item emitted for display
-- `FetchOptions` / `FetchResponse<T>` - HTTP request/response types
-- `WebSocketCallbacks` / `WebSocketConnection` - WebSocket types
-
-Create a new source project:
-
-```bash
-npm create glanceway-source
-```

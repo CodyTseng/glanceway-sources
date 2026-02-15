@@ -23,7 +23,7 @@ const en = {
   "features.trackEverything.title": "Track Everything",
   "features.trackEverything.description": "Earthquake alerts, spaceflight news, TV schedules — follow what you care about.",
   "features.buildYourOwn.title": "Build Your Own",
-  "features.buildYourOwn.description": "Write a few lines of YAML or TypeScript to create your own source.",
+  "features.buildYourOwn.description": "Write a few lines of YAML or JavaScript to create your own source.",
   "features.buildYourOwn.link": "Read the docs",
   "features.rssAndBeyond.title": "RSS & Beyond",
   "features.rssAndBeyond.description": "Native RSS/Atom support. Use with RSSHub to access thousands of feeds.",
@@ -32,7 +32,7 @@ const en = {
 
   // Open Platform
   "openPlatform.title": "An open source ecosystem",
-  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, TypeScript for full control.",
+  "openPlatform.description": "Anyone can create and share sources. Simple YAML for quick setups, JavaScript for full control.",
   "openPlatform.browseSources": "Browse Sources",
 
   // CTA

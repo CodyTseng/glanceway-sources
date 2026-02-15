@@ -8,14 +8,14 @@ This guide covers how to develop custom information sources for Glanceway.
 | -------------- | ------------------------------------------- | -------------------------------------------------------- |
 | **RSS**        | Feed URL in Glanceway                       | Standard RSS/Atom feeds — no development needed          |
 | **YAML**       | Single `.yaml` file                         | Simple JSON APIs, straightforward field mapping          |
-| **TypeScript** | Directory with `manifest.yaml` + `index.ts` | Complex logic, multiple API calls, WebSocket, pagination |
+| **JavaScript** | Directory with `manifest.yaml` + `index.ts` | Complex logic, multiple API calls, WebSocket, pagination |
 
-When in doubt, start with YAML. If you need custom logic, switch to TypeScript.
+When in doubt, start with YAML. If you need custom logic, switch to JavaScript.
 
 ## Guides
 
 - **[YAML Source Development](./yaml-source.md)** — YAML format, parsing rules, filters, URL transforms
-- **[JS/TS Source Development](./js-source.md)** — TypeScript source scaffold and tooling
+- **[JS/TS Source Development](./js-source.md)** — JavaScript source scaffold and tooling
 
 ## Categories
 

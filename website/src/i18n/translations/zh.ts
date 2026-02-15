@@ -26,7 +26,7 @@ const zh: Record<TranslationKey, string> = {
   "features.trackEverything.title": "追踪万物",
   "features.trackEverything.description": "地震预警、太空新闻、TV 节目表——关注你在意的事。",
   "features.buildYourOwn.title": "自己动手",
-  "features.buildYourOwn.description": "几行 YAML 或 TypeScript，即可创建自己的信息源。",
+  "features.buildYourOwn.description": "几行 YAML 或 JavaScript，即可创建自己的信息源。",
   "features.buildYourOwn.link": "阅读文档",
   "features.rssAndBeyond.title": "RSS 及更多",
   "features.rssAndBeyond.description": "原生 RSS/Atom 支持，搭配 RSSHub 可获取数千种订阅源。",
@@ -35,7 +35,7 @@ const zh: Record<TranslationKey, string> = {
 
   // Open Platform
   "openPlatform.title": "开放的信息源生态",
-  "openPlatform.description": "任何人都可以创建和分享信息源。用 YAML 快速上手，用 TypeScript 完全掌控。",
+  "openPlatform.description": "任何人都可以创建和分享信息源。用 YAML 快速上手，用 JavaScript 完全掌控。",
   "openPlatform.browseSources": "浏览信息源",
 
   // CTA

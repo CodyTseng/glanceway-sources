@@ -16,7 +16,7 @@ npm run generate-readme                              # Regenerate README.md
 
 There is no test framework. Build the source to verify it compiles. There is no linter or formatter configured.
 
-## Choosing Between YAML and TypeScript Sources
+## Choosing Between YAML and JavaScript Sources
 
 **Use a YAML source** when:
 
@@ -24,7 +24,7 @@ There is no test framework. Build the source to verify it compiles. There is no 
 - You only need simple field mapping (JSONPath) from the response to InfoItem fields
 - No complex data transformation, pagination, or conditional logic is required
 
-**Use a TypeScript source** when:
+**Use a JavaScript source** when:
 
 - You need multiple API calls or conditional logic
 - You need complex data transformation (e.g., URL rewriting, combining fields)
@@ -32,7 +32,7 @@ There is no test framework. Build the source to verify it compiles. There is no 
 - You need pagination or OAuth
 - You need persistent storage between refreshes
 
-When in doubt, start with YAML. If the requirements exceed what YAML can express, switch to TypeScript.
+When in doubt, start with YAML. If the requirements exceed what YAML can express, switch to JavaScript.
 
 ## Creating a YAML Source
 
@@ -93,24 +93,23 @@ npm run build-sources -- --source author/source-name
 
 YAML sources are copied as-is (no compilation). Check `dist/author/source-name/` for the output.
 
-## Creating a TypeScript Source
+## Creating a JavaScript Source
 
 ### Step 1: Create Source Directory
 
-Create `sources/<author>/<source-name>/` with two files: `manifest.yaml` and `index.ts`.
+Create a directory with two files: `manifest.yaml` and `index.js`.
 
 ```
-sources/myname/my-source/
+my-source/
 ├── manifest.yaml
-├── index.ts
-└── types.ts
+└── index.js
 ```
 
-Copy `types.ts` from any existing source (e.g., `sources/codytseng/hacker-news/types.ts`).
+To submit to this repository, place it under `sources/<author>/<source-name>/`.
 
-### Step 2: Implement index.ts
+### Step 2: Implement index.js
 
-Edit `index.ts` to implement source logic. See the API Reference below and use `sources/codytseng/github-notifications/` as a canonical example.
+Edit `index.js` to implement source logic. See the API Reference below and use existing sources as examples.
 
 ### Step 3: Update manifest.yaml Config
 
@@ -148,16 +147,10 @@ npm run build-sources -- --source myname/my-source
 
 ## Source Development Constraints
 
-**NO external imports.** Sources cannot use `import` or `require` for external packages. The only allowed import is the type import:
+**NO external imports.** Sources cannot use `import` or `require` for external packages. All functionality is provided through the `api` parameter. Use `module.exports` to export the source function:
 
-```typescript
-import type { GlancewayAPI, SourceMethods } from "./types";
-```
-
-All functionality is provided through the `api` parameter. Use `export default` for the default export. Use `GlancewayAPI<Config>` generic when config fields are defined:
-
-```typescript
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
+```javascript
+module.exports = async (api) => {
   async function fetchData() {
     /* fetch, transform, emit */
   }
@@ -176,69 +169,52 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 
 ## API Reference
 
-All methods are available on the `api: GlancewayAPI` parameter.
+All methods are available on the `api` parameter.
 
-### api.emit(items: InfoItem[])
+### api.emit(items)
 
-Send items to Glanceway for display.
+Send items to Glanceway for display. Each item has these fields:
 
-```typescript
-interface InfoItem {
-  id: string; // Unique identifier
-  title: string; // Main display text
-  subtitle?: string; // Secondary text below title
-  url?: string; // Link opened on click
-  timestamp?: Date | string | number; // ISO string, Unix timestamp, or Date
-}
-```
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | Yes | Unique identifier |
+| `title` | string | Yes | Main display text |
+| `subtitle` | string | No | Secondary text below title |
+| `url` | string | No | Link opened on click |
+| `timestamp` | Date / string / number | No | ISO string, Unix timestamp, or Date |
 
-### api.fetch\<T\>(url: string, options?: FetchOptions): Promise\<FetchResponse\<T\>\>
+### api.fetch(url, options?)
 
-Make HTTP requests. Supports generics for typed JSON responses.
+Make HTTP requests.
 
-```typescript
-interface FetchOptions {
-  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"; // default: GET
-  headers?: Record<string, string>;
-  body?: string;
-  timeout?: number; // milliseconds, default: 30000
-}
+Options: `method` (default `"GET"`), `headers`, `body`, `timeout` (default 30000ms).
 
-interface FetchResponse<T> {
-  ok: boolean; // true if status 200-299
-  status: number;
-  headers: Record<string, string>;
-  text: string; // raw response body
-  json?: T; // parsed JSON (if valid)
-}
-```
+Response: `ok` (boolean), `status`, `headers`, `text`, `json` (parsed if valid).
 
 Example:
 
-```typescript
-const response = await api.fetch<{
-  items: Array<{ id: string; name: string }>;
-}>("https://api.example.com/data", {
+```javascript
+const response = await api.fetch("https://api.example.com/data", {
   headers: { Authorization: `Bearer ${token}` },
 });
 if (response.ok && response.json) {
-  // response.json is typed
+  // use response.json
 }
 ```
 
-### api.config.get(key: string): unknown
+### api.config.get(key)
 
 Get a user-configured value by key (defined in `manifest.yaml` config section). Returns `string` for most types, `string[]` for `list` type.
 
-### api.config.getAll(): Record\<string, unknown\>
+### api.config.getAll()
 
 Get all user-configured values as a key-value map.
 
-### api.storage.get(key: string): string | undefined
+### api.storage.get(key)
 
 Get a persisted value. Data survives between refreshes and app restarts.
 
-### api.storage.set(key: string, value: string): void
+### api.storage.set(key, value)
 
 Store a value persistently.
 
@@ -250,23 +226,13 @@ Log messages for debugging. Levels: `"info"`, `"error"`, `"warn"`, `"debug"`.
 
 Current Glanceway app version string (e.g., `"1.2.0"`).
 
-### api.websocket.connect(url, callbacks): Promise\<WebSocketConnection\>
+### api.websocket.connect(url, callbacks)
 
 Create a WebSocket connection for real-time data.
 
-```typescript
-interface WebSocketCallbacks {
-  onConnect?: (ws: WebSocketConnection) => void;
-  onMessage?: (data: string) => void;
-  onError?: (error: string) => void;
-  onClose?: (code: number) => void;
-}
+Callbacks: `onConnect(connection)`, `onMessage(data)`, `onError(error)`, `onClose(code)`.
 
-interface WebSocketConnection {
-  send(message: string): Promise<void>;
-  close(): void;
-}
-```
+The connection object has `send(message)` and `close()` methods.
 
 ## manifest.yaml Full Schema
 
@@ -304,9 +270,9 @@ config: # Optional: user-configurable values
 
 ## Source Lifecycle
 
-TypeScript sources have two distinct phases:
+JavaScript sources have two distinct phases:
 
-1. **Start phase**: When the source is first loaded, the default export function (outer closure) runs. The app does **NOT** call `refresh()` at this point. Sources should perform their initial data fetch here by `await`ing their fetch function before returning.
+1. **Start phase**: When the source is first loaded, the exported function (outer closure) runs. The app does **NOT** call `refresh()` at this point. Sources should perform their initial data fetch here by `await`ing their fetch function before returning.
 2. **Refresh phase**: On each scheduled refresh interval, the app calls `refresh()`. This is the only time `refresh()` is invoked.
 
 This separation allows sources to distinguish between initial load and periodic refresh, enabling different behavior if needed (e.g., full load on start vs. incremental update on refresh). For most sources, both phases do the same work.
@@ -315,12 +281,12 @@ This separation allows sources to distinguish between initial load and periodic 
 
 Extract the fetch logic into a named async function, call it in the outer closure for the start phase, and assign it as the `refresh` method:
 
-```typescript
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
+```javascript
+module.exports = async (api) => {
   const token = api.config.get("API_TOKEN");
 
   async function fetchData() {
-    const res = await api.fetch<Item[]>(url);
+    const res = await api.fetch(url);
     if (!res.ok || !res.json) {
       throw new Error(`Failed to fetch (HTTP ${res.status})`);
     }
@@ -341,71 +307,27 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 - Always make full use of the `subtitle` field. If the API response contains summary, description, brief, or any descriptive text, map it to `subtitle` so users get maximum information at a glance.
 - **Maximize items per fetch.** The app does not paginate, so each fetch should retrieve as many items as the API allows without hurting performance. The hard upper limit is **500 items** — never exceed this. For APIs with a configurable page size, set it to the API's maximum or 500, whichever is smaller. For sources that make N parallel sub-requests (e.g., Hacker News, xkcd), keep N reasonable to avoid excessive latency.
 
-## TypeScript Source Code Conventions
+## Source Code Conventions
 
 ### File Structure Order
 
-```typescript
-// 1. Type import (always first)
-import type { GlancewayAPI, SourceMethods } from "./types";
-
-// 2. Type definitions (config, response types, data models)
-type Config = {
-  API_TOKEN: string;
-  TAGS: string[];
-};
-
-type Article = {
-  id: number;
-  title: string;
-  description: string;
-  url: string;
-  published_at: string;
-};
-
-// 3. Helper functions (pure utilities, no api dependency)
-function stripHtml(html: string): string {
+```javascript
+// 1. Helper functions (pure utilities, no api dependency)
+function stripHtml(html) {
   return html.replace(/<[^>]*>/g, "");
 }
 
-// 4. Default export (async, with Config generic)
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
-  // 5. Config reading (in outer closure; script reloads on config change)
+// 2. Module export
+module.exports = async (api) => {
+  // 3. Config reading (in outer closure; script reloads on config change)
   const token = api.config.get("API_TOKEN");
 
-  // 6. Fetch function (fetch, transform, emit)
+  // 4. Fetch function (fetch, transform, emit)
   async function fetchData() {
     // ...
   }
 
-  // 7. Start phase: initial fetch (awaited before returning)
-  await fetchData();
-
-  return {
-    refresh: fetchData,
-  };
-};
-```
-
-### Config Typing
-
-Use `GlancewayAPI<Config>` generic to define config field types. This gives `api.config.get()` type-safe keys and return values, eliminating manual `as` casts.
-
-```typescript
-type Config = {
-  SORT: string;
-  TAGS: string[];
-};
-
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
-  const sort = api.config.get("SORT");   // string
-  const tags = api.config.get("TAGS");   // string[]
-  // api.config.get("TYPO")              // compile error
-
-  async function fetchData() {
-    // use sort, tags directly
-  }
-
+  // 5. Start phase: initial fetch (awaited before returning)
   await fetchData();
 
   return {
@@ -418,8 +340,8 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 
 Read config **in the outer closure** (before `return`), not inside the fetch function. When config changes, Glanceway reloads the entire script, so the outer closure always has fresh values.
 
-```typescript
-export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
+```javascript
+module.exports = async (api) => {
   const sort = api.config.get("SORT") || "hot";
 
   async function fetchData() {
@@ -434,25 +356,13 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 };
 ```
 
-### Response Type Annotations
-
-Use `api.fetch<T>()` generics to type responses. For simple/one-off types, inline them at the call site. For complex or reused types, define named types at the top of the file.
-
-```typescript
-// Simple: inline
-const res = await api.fetch<{ items: Article[] }>("https://...");
-
-// Complex: use named interface defined at file top
-const res = await api.fetch<RedditListing>("https://...");
-```
-
 ### Error Handling
 
 Check `res.ok && res.json` before using response data. For the main/only request, throw on failure. For parallel sub-requests, skip failures silently.
 
-```typescript
+```javascript
 // Single request: throw on failure
-const res = await api.fetch<Article[]>(url);
+const res = await api.fetch(url);
 if (!res.ok || !res.json) {
   throw new Error(`Failed to fetch articles (HTTP ${res.status})`);
 }
@@ -463,10 +373,10 @@ api.emit(toItems(res.json));
 
 Always use `Promise.allSettled` (never `Promise.all`) for parallel requests. Skip failed results instead of throwing.
 
-```typescript
+```javascript
 await Promise.allSettled(
   ids.map(async (id) => {
-    const res = await api.fetch<Item>(`https://api.example.com/items/${id}`);
+    const res = await api.fetch(`https://api.example.com/items/${id}`);
     if (res.ok && res.json) {
       items.push(res.json);
       api.emit(/* ... */);
@@ -479,16 +389,16 @@ await Promise.allSettled(
 
 Define reusable mapping functions (e.g., `toItems`) **inside the fetch function** when they use closure variables. Define pure utility functions (e.g., `stripHtml`) **at the module top** before the export.
 
-```typescript
+```javascript
 // Module top: pure utility, no dependency on api or config
-function stripHtml(html: string): string {
+function stripHtml(html) {
   return html.replace(/<[^>]*>/g, "");
 }
 
-export default async (api: GlancewayAPI): Promise<SourceMethods> => {
+module.exports = async (api) => {
   async function fetchData() {
     // Inside fetch function: uses closure variables
-    const toItems = (articles: Article[]) =>
+    const toItems = (articles) =>
       articles.map((a) => ({
         id: a.id.toString(),
         title: a.title,

@@ -73,7 +73,7 @@ export function getSourceDetail(id: string): SourceDetail | undefined {
     };
   }
 
-  // JS (TypeScript) source — read all files in directory
+  // JS source — read all files in directory
   const sourceDir = path.join(SOURCES_DIR, author, name);
   const entries = fs.readdirSync(sourceDir).sort();
 

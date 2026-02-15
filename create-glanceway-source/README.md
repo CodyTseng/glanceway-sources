@@ -53,7 +53,7 @@ Example prompts:
 cd my-source
 npm install
 
-# Build: compiles TypeScript, creates dist/latest.zip
+# Build: compiles source, creates dist/latest.zip
 npm run build
 
 # Test: executes source with mock API, validates emitted items

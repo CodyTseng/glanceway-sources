@@ -211,7 +211,7 @@ function generateClaudeMd(options: {
 
 ## Project Overview
 
-Glanceway source: "${options.name}" by ${options.author}. This is a standalone TypeScript source for [Glanceway](https://glanceway.app), a macOS menu bar app that displays information items.
+Glanceway source: "${options.name}" by ${options.author}. This is a standalone JavaScript source for [Glanceway](https://glanceway.app), a macOS menu bar app that displays information items.
 
 ## Commands
 
@@ -394,7 +394,7 @@ config:                     # Optional: user-configurable values
 
 ## Source Lifecycle
 
-TypeScript sources have two distinct phases:
+JavaScript sources have two distinct phases:
 
 1. **Start phase**: When the source is first loaded, the default export function (outer closure) runs. The app does **NOT** call \`refresh()\` at this point. Sources should perform their initial data fetch here by \`await\`ing their fetch function before returning.
 2. **Refresh phase**: On each scheduled refresh interval, the app calls \`refresh()\`. This is the only time \`refresh()\` is invoked.
@@ -429,7 +429,7 @@ export default async (api: GlancewayAPI<Config>): Promise<SourceMethods> => {
 - Always make full use of the \`subtitle\` field. If the API response contains summary, description, brief, or any descriptive text, map it to \`subtitle\` so users get maximum information at a glance.
 - **Maximize items per fetch.** The app does not paginate, so each fetch should retrieve as many items as the API allows without hurting performance. The hard upper limit is **500 items** — never exceed this.
 
-## TypeScript Source Code Conventions
+## Source Code Conventions
 
 ### File Structure Order
 
